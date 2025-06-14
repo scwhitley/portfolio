@@ -1,0 +1,11 @@
+{
+  "name": "whitley-portfolio",
+  "version": "1.0.0",
+  "description": "portfolio describing my coding experience, work experience and music experience",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "D4rth Distortion",
+  "license": "ISC"
+}

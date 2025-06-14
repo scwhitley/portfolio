@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stephen Whitley Portfolio</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baskervville+SC&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+  <!-- Row 1: Header -->
+<div class="row row-header fade-in bounce delay-1">
+  <div class="box name-box">Stephen Whitley</div>
+  <div class="box nav-box">
+    
+  </div>
+</div>
+
+<!-- Row 2: Intro -->
+<div class="row row-intro fade-in bounce delay-2">
+  <div class="box headshot-box"><img src="../images/headshot.jpeg" alt="Stephen Headshot"></div>
+  <div class="box intro-text-box">
+  <div class="content-group">
+    <h2>Hi, I’m Stephen Whitley</h2>
+    <br>
+    <p><em>An engineer, musician, web-building newcomer, and content creator.</em></p>
+  </div>
+</div>
+
+  <div class="box intro-side-box">
+    <img src="../images/guitar.jpeg" alt="Dog">
+  </div>
+</div>
+
+<!-- Row 3: Work Experience with Education Carousel -->
+<div class="row row-work fade-in bounce delay-3">
+  <!-- Education Carousel Box -->
+  <div class="box edu-box">
+    <div class="carousel">
+      <button class="arrow edu-left" aria-label="Previous">
+        <i class="bi bi-arrow-left-circle"></i>
+      </button>
+      <div class="carousel-content edu-content">
+        <!-- Populated by JS -->
+      </div>
+      <button class="arrow edu-right" aria-label="Next">
+        <i class="bi bi-arrow-right-circle"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Work Carousel Box -->
+  <div class="box work-box">
+    <div class="carousel">
+      <button class="arrow work-left" aria-label="Previous">
+        <i class="bi bi-arrow-left-circle"></i>
+      </button>
+      <div class="carousel-content work-content">
+        <!-- Populated by JS -->
+      </div>
+      <button class="arrow work-right" aria-label="Next">
+        <i class="bi bi-arrow-right-circle"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Image Box -->
+  <div class="box work-right">
+    <img src="../images/nccuGrad.jpeg" alt="Masters degree photo">
+  </div>
+</div>
+
+<!-- Row 4: Technology Skills (Triggers Modal) / Certs / Skills -->
+<div class="row row-education fade-in bounce delay-4">
+  <div class="box tech-box">
+    <a href="#" id="openModal">
+  <img src="../images/techskills.jpeg" alt="Technology Skills">
+</a>
+    <p>Click Me!</p>
+  </div>
+  <div class="box cert-box">
+    <h3>Certifications</h3>
+    <p>Certified Scrum Master | expires 2027</p>
+    <p>Scrum Alliance</p>
+  </div>
+  <div class="box skill-box">
+    <h3>Top Skills</h3>
+    <ul style="list-style-type:none;">
+      <li>Scrum Methodology</li>
+      <li>Technical Consulting</li>
+      <li>Troubleshooting</li>
+      <li>Release Planning</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Modal Window -->
+<div id="techModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <div class="modal-section">
+      <h3>Project Management</h3>
+      <ul>
+        <li>Agile/Scrum Methodology</li>
+        <li>Release Planning</li>
+        <li>Team Leadership</li>
+      </ul>
+    </div>
+    <div class="modal-section">
+      <h3>Web Development</h3>
+      <ul>
+        <li>HTML, CSS, JavaScript</li>
+        <li>Bootstrap</li>
+        <li>Responsive Design</li>
+      </ul>
+    </div>
+    <div class="modal-section">
+      <h3>Applications / Software</h3>
+      <ul>
+        <li>Jira, Confluence</li>
+        <li>Salesforce</li>
+        <li>Slack, Teams</li>
+      </ul>
+    </div>
+    <div class="modal-section">
+      <h3>Operating Systems</h3>
+      <ul>
+        <li>macOS</li>
+        <li>Windows</li>
+        <li>Linux (Basic CLI)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="row row-hobby fade-in bounce delay-5">
+  <div class="box shoe-box">
+    <!-- Modal trigger inside -->
+    <p id="openShoeModal">It's not a hobby. It's a lifestyle</p>
+  </div>
+
+  <div class="box contact-box">
+    <h3>Contact Me</h3> 
+    <p>Let’s collaborate!</p>
+    <p>stephen@example.com</p>
+  </div>
+
+  <div class="box image-box">
+    <img src="../images/guitar.jpeg" alt="Bass Guitar">
+  </div>
+</div>
+
+
+  
+
+<!-- Sneaker Modal -->
+<div id="sneakerModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeSneakerModal">&times;</span>
+    <div class="carousel">
+      <button class="left-arrow" id="sneakerLeft" aria-label="Previous">
+        <i class="bi bi-arrow-left-circle"></i>
+      </button>
+      <div class="carousel-content" id="sneakerCarouselContent">
+        <!-- Populated by JS -->
+      </div>
+      <button class="right-arrow" id="sneakerRight" aria-label="Next">
+        <i class="bi bi-arrow-right-circle"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<script src="../js/scripts.js"></script>
+
+</body>
+</html>
