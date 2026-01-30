@@ -17,18 +17,41 @@
 </head>
 
 <body>
-  <!-- Row 1: Sticky Header (no social nav) -->
   <div class="row row-header fade-in bounce delay-1">
-    <div class="box name-box header-wide">
-      <div class="brand">
+  <div class="box name-box header-wide">
+
+    <div class="brand header-flex">
+
+      <!-- LEFT SIDE -->
+      <div class="brand-left">
         <img class="brand-logo" src="images/logo.jpg" alt="MR. DISTORT logo" />
+
         <div class="brand-text">
           <div class="brand-name">MR. DISTORT</div>
           <div class="brand-tag">Content. Streaming. Chaos (organized).</div>
         </div>
       </div>
+
+      <!-- RIGHT SIDE (Spotify Player) -->
+      <div class="spotify-header">
+        <iframe 
+      data-testid="embed-iframe" 
+      style="border-radius:12px" 
+      src="https://open.spotify.com/embed/playlist/1coykh9bvb2JKkkXXRzjWU?utm_source=generator" 
+      width="100%" 
+      height="352" 
+      frameBorder="0" 
+      allowfullscreen="" 
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+      loading="lazy">
+        </iframe>
+      </div>
+
     </div>
+
   </div>
+</div>
+
 
   <!-- Row 2: Hero / Socials / Merch Carousel -->
   <div class="row row-intro fade-in bounce delay-2">
