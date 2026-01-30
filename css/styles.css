@@ -1,14 +1,22 @@
 :root{
   --bg: #0b0c10;
-  --panel: #11131a;
-  --panel2: #0f1117;
   --text: #f2f2f2;
   --muted: rgba(242,242,242,0.72);
   --line: rgba(255,255,255,0.08);
-  --red: #e11d2e;         /* adjust to match your logo later */
-  --red2: rgba(225,29,46,0.35);
+
+  --red: #e11d2e;
+  --redGlow: rgba(225,29,46,0.18);
+
   --shadow: 0 12px 40px rgba(0,0,0,0.55);
   --radius: 18px;
+
+  /* Platform brand colors */
+  --twitch: #9146FF;
+  --kick: #53FC18;
+  --tiktokCyan: #25F4EE;
+  --tiktokRed: #FE2C55;
+  --youtube: #FF0000;
+  --instagram: #E1306C;
 }
 
 html, body {
@@ -22,11 +30,8 @@ html, body {
 
 p { font-size: 16px; line-height: 1.6; color: var(--muted); }
 h2, h3 { margin: 0.6rem 0; }
-ul { margin: 0; padding-left: 1.2rem; }
 
-.container { display:flex; flex-direction:column; padding:0; animation: fadeIn 1s ease-in-out forwards; }
-
-.row { display:flex; flex-wrap:wrap; margin: 0; gap: 14px; padding: 14px; }
+.row { display:flex; flex-wrap:wrap; gap: 14px; padding: 14px; }
 
 .box{
   background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
@@ -49,47 +54,46 @@ ul { margin: 0; padding-left: 1.2rem; }
   backdrop-filter: blur(14px);
 }
 
-.name-box { flex: 0.6; }
-.nav-box { flex: 0.4; display:flex; align-items:center; justify-content:flex-end; }
+/* Header tweaks: bigger logo + text, more stretch */
+.header-wide{
+  flex: 1;
+}
 
-.brand{ display:flex; align-items:center; gap: 14px; }
+.brand{
+  display:flex;
+  align-items:center;
+  gap: 16px;
+  padding: 6px 6px;
+}
+
 .brand-logo{
-  width: 56px; height: 56px;
+  width: 74px;
+  height: 74px;
   object-fit: contain;
-  border-radius: 14px;
-  border: 1px solid var(--line);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.10);
   background: rgba(0,0,0,0.25);
 }
-.brand-name{ font-weight: 800; letter-spacing: 0.5px; }
-.brand-tag{ font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-.top-nav{ display:flex; flex-wrap:wrap; gap: 10px; justify-content:flex-end; padding-right: 6px; }
-
-.nav-link{
-  display:inline-flex;
-  align-items:center;
-  gap: 8px;
-  padding: 10px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  color: var(--text);
-  text-decoration:none;
-  background: rgba(255,255,255,0.03);
-  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
-  font-size: 14px;
+.brand-name{
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  font-size: 28px;
+  line-height: 1.05;
 }
-.nav-link i{ color: var(--red); }
-.nav-link:hover{
-  transform: translateY(-1px);
-  border-color: rgba(225,29,46,0.6);
-  box-shadow: 0 0 0 4px rgba(225,29,46,0.18);
+
+.brand-tag{
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 4px;
 }
 
 .hero-title{
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 800;
   letter-spacing: 0.4px;
 }
+
 .hero-sub{ margin-top: 8px; }
 
 .panel-title{
@@ -123,20 +127,23 @@ ul { margin: 0; padding-left: 1.2rem; }
   border-color: rgba(225,29,46,0.6);
   box-shadow: 0 10px 30px rgba(225,29,46,0.18);
 }
+
 .btn.ghost{ background: rgba(255,255,255,0.03); }
 .btn.full{ width: 100%; }
 
 .btn:hover, .chip:hover{
   transform: translateY(-1px);
   border-color: rgba(225,29,46,0.6);
-  box-shadow: 0 0 0 4px rgba(225,29,46,0.18);
+  box-shadow: 0 0 0 4px var(--redGlow);
 }
 
+/* Social list */
 .social-links{
   display:grid;
   grid-template-columns: 1fr;
   gap: 10px;
 }
+
 .social-links a{
   display:flex;
   justify-content:space-between;
@@ -149,14 +156,49 @@ ul { margin: 0; padding-left: 1.2rem; }
   background: rgba(255,255,255,0.03);
   transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
+
 .social-links a:hover{
   transform: translateY(-1px);
   border-color: rgba(225,29,46,0.6);
-  box-shadow: 0 0 0 4px rgba(225,29,46,0.18);
+  box-shadow: 0 0 0 4px var(--redGlow);
 }
-.social-links .left{ display:flex; align-items:center; gap: 10px; }
-.social-links i{ color: var(--red); font-size: 18px; }
 
+.social-links .left{ display:flex; align-items:center; gap: 10px; }
+.social-links .right{ color: rgba(255,255,255,0.55); }
+
+/* Kick custom "K" badge */
+.kick-badge{
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 800;
+  font-size: 12px;
+  background: rgba(83,252,24,0.18);
+  border: 1px solid rgba(83,252,24,0.55);
+  color: var(--kick);
+}
+
+/* Brand color icons */
+.icon-twitch{ color: var(--twitch); }
+.icon-kick{ color: var(--kick); }
+.icon-tiktok{
+  background: linear-gradient(90deg, var(--tiktokCyan), var(--tiktokRed));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.icon-instagram{
+  background: linear-gradient(90deg, #F58529, #DD2A7B, #8134AF, #515BD4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.icon-youtube{ color: var(--youtube); }
+
+/* Stats carousel */
 .carousel{
   display:flex;
   align-items:center;
@@ -172,11 +214,13 @@ ul { margin: 0; padding-left: 1.2rem; }
   cursor: pointer;
   padding: 14px;
 }
+
 .arrow i{
   font-size: 2rem;
   color: rgba(255,255,255,0.75);
   transition: transform 0.15s ease, color 0.15s ease;
 }
+
 .arrow:hover i{
   transform: scale(1.1);
   color: var(--text);
@@ -200,7 +244,8 @@ ul { margin: 0; padding-left: 1.2rem; }
   font-weight: 800;
   letter-spacing: 0.4px;
 }
-.stat-platform i{ color: var(--red); font-size: 22px; }
+
+.stat-platform .platform-icon{ font-size: 22px; }
 .stat-number{
   font-size: 44px;
   font-weight: 800;
@@ -211,9 +256,51 @@ ul { margin: 0; padding-left: 1.2rem; }
 
 .muted{ color: var(--muted); font-size: 13px; }
 
+/* Merch carousel */
+.merch-sub{ margin-top: -4px; margin-bottom: 12px; }
+
+.merch-carousel{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.02);
+  padding: 10px;
+}
+
+.merch-stage{
+  flex: 1;
+  min-height: 240px;
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.merch-image{
+  width: 100%;
+  max-height: 260px;
+  object-fit: contain;
+  border-radius: 14px;
+}
+
+.merch-title{
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+}
+
+.merch-footer{
+  margin-top: 12px;
+}
+
+/* Contact */
 .contact-quick-box{ cursor:pointer; }
 .contact-callout{ margin-top: 10px; }
 
+/* Modals */
 .modal{
   display:none;
   position: fixed;
@@ -245,6 +332,7 @@ ul { margin: 0; padding-left: 1.2rem; }
 .modal-title{ margin-top: 6px; }
 .modal-sub{ margin-top: 6px; margin-bottom: 18px; }
 
+/* Affiliate modal grid */
 .affiliate-grid{
   display:grid;
   grid-template-columns: 1fr;
@@ -253,101 +341,4 @@ ul { margin: 0; padding-left: 1.2rem; }
 
 .affiliate-category{
   border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 14px;
-  background: rgba(255,255,255,0.02);
-}
-
-.affiliate-category h4{
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  letter-spacing: 0.3px;
-}
-
-.affiliate-items{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 12px;
-}
-
-.affiliate-card{
-  display:flex;
-  gap: 12px;
-  align-items:center;
-  padding: 12px;
-  border-radius: 16px;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.03);
-}
-
-.affiliate-logo{
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-  border-radius: 14px;
-  background: rgba(0,0,0,0.25);
-  border: 1px solid var(--line);
-}
-
-.affiliate-meta{ flex: 1; text-align:left; }
-.affiliate-name{ font-weight: 800; }
-.affiliate-blurb{ font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-.contact-form{
-  display:grid;
-  gap: 12px;
-}
-
-.contact-form label{
-  display:grid;
-  gap: 8px;
-  font-size: 13px;
-  color: rgba(255,255,255,0.82);
-}
-
-.contact-form input,
-.contact-form select,
-.contact-form textarea{
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(0,0,0,0.25);
-  color: var(--text);
-  padding: 12px 12px;
-  outline: none;
-}
-
-.contact-form input:focus,
-.contact-form select:focus,
-.contact-form textarea:focus{
-  border-color: rgba(225,29,46,0.55);
-  box-shadow: 0 0 0 4px rgba(225,29,46,0.16);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(18px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes bounce {
-  0% { transform: translateY(22px); opacity: 0; }
-  60% { transform: translateY(-6px); opacity: 1; }
-  80% { transform: translateY(3px); }
-  100% { transform: translateY(0); opacity: 1; }
-}
-
-.fade-in { opacity: 0; animation: fadeIn 1s ease forwards; }
-.bounce { animation: bounce 1s ease forwards; }
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.3s; }
-.delay-3 { animation-delay: 0.5s; }
-.delay-4 { animation-delay: 0.7s; }
-.delay-5 { animation-delay: 0.9s; }
-
-/* Mobile tweaks */
-@media (max-width: 900px){
-  .name-box { flex: 1; }
-  .nav-box { flex: 1; justify-content:flex-start; }
-  .brand-logo { width: 48px; height: 48px; }
-  .hero-title{ font-size: 24px; }
-  .stat-number{ font-size: 38px; }
-}
+  border-radius: 1
