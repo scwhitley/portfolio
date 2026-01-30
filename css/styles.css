@@ -47,6 +47,7 @@ h2, h3 { margin: 0.6rem 0; }
   position: relative;
 }
 
+
 .box-content { padding: 18px; }
 
 .row-header{
@@ -66,6 +67,22 @@ h2, h3 { margin: 0.6rem 0; }
   gap: 16px;
   padding: 6px 6px;
 }
+
+/* DISPLAY FONT */
+
+h1, h2, h3, h4,
+.brand-name,
+.hero-title,
+.panel-title,
+.btn,
+.chip,
+.stat-number,
+.stat-platform,
+.merch-title {
+    font-family: var(--font-display);
+    letter-spacing: 0.5px;
+}
+
 
 .brand-logo{
   width: 74px;
@@ -144,6 +161,7 @@ h2, h3 { margin: 0.6rem 0; }
   grid-template-columns: 1fr;
   gap: 10px;
 }
+
 
 .social-links a{
   display:flex;
