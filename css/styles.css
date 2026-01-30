@@ -71,7 +71,9 @@ h2, h3 { margin: 0.6rem 0; }
 /* DISPLAY FONT */
 
 h1, h2, h3, h4,
-.brand-name,
+.brand-name {
+  font-weight: 800;
+}
 .hero-title,
 .panel-title,
 .btn,
