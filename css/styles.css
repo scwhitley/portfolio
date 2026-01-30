@@ -7,6 +7,9 @@
   --red: #e11d2e;
   --redGlow: rgba(225,29,46,0.18);
 
+  --font-display: 'Oxanium', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
   --shadow: 0 12px 40px rgba(0,0,0,0.55);
   --radius: 18px;
 
