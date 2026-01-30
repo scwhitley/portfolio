@@ -47,6 +47,19 @@ h2, h3 { margin: 0.6rem 0; }
   position: relative;
 }
 
+.header-flex{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    width:100%;
+}
+
+.brand-left{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
 
 .box-content { padding: 18px; }
 
