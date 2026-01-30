@@ -70,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <div class="stat-number">${s.value}</div>
       <div class="stat-label">${s.label}</div>
-      <div class="muted">Manual for now • Phase 2 = auto</div>
     `;
   }
 
