@@ -17,23 +17,20 @@
 </head>
 
 <body>
-  <!-- Row 1: Sticky Header -->
+  <!-- Row 1: Sticky Header (no social nav) -->
   <div class="row row-header fade-in bounce delay-1">
-    <div class="box name-box">
+    <div class="box name-box header-wide">
       <div class="brand">
-        <img class="brand-logo" src="images/logo.jpg" alt="MR. DISTORT logo" />
+        <img class="brand-logo" src="images/logo.png" alt="MR. DISTORT logo" />
         <div class="brand-text">
           <div class="brand-name">MR. DISTORT</div>
           <div class="brand-tag">Content. Streaming. Chaos (organized).</div>
         </div>
       </div>
     </div>
-    <div class="box nav-box">
-      <nav id="topNav" class="top-nav"></nav>
-    </div>
   </div>
 
-  <!-- Row 2: Hero / Bio -->
+  <!-- Row 2: Hero / Socials / Merch Carousel -->
   <div class="row row-intro fade-in bounce delay-2">
     <div class="box hero-left">
       <div class="box-content">
@@ -43,7 +40,7 @@
         </p>
 
         <div class="cta-row">
-          <a class="btn primary" id="btnWatchLive" href="https://www.twitch.tv/mrdistort" target="_blank" rel="noopener">
+          <a class="btn primary" href="https://www.twitch.tv/mrdistort" target="_blank" rel="noopener">
             <i class="bi bi-broadcast"></i> Watch Live
           </a>
           <a class="btn ghost" href="https://discord.gg/uKDFg4mVqF" target="_blank" rel="noopener">
@@ -55,9 +52,6 @@
           <button class="chip" id="openAffiliateModal">
             <i class="bi bi-stars"></i> Partners & Affiliate Links
           </button>
-          <a class="chip" href="https://mr-distort-shop.fourthwall.com" target="_blank" rel="noopener">
-            <i class="bi bi-bag"></i> Merch
-          </a>
         </div>
       </div>
     </div>
@@ -70,17 +64,32 @@
     </div>
 
     <div class="box hero-right">
-      <div class="box-content merch-spotlight">
+      <div class="box-content">
         <div class="panel-title">Merch</div>
-        <p>New drops + classics. Wear the realm. 👀</p>
-        <a class="btn primary" href="https://mr-distort-shop.fourthwall.com" target="_blank" rel="noopener">
-          <i class="bi bi-shop"></i> Shop Merch
-        </a>
+        <p class="muted merch-sub">Featured items from the shop. (Click to view.)</p>
+
+        <div class="merch-carousel">
+          <button class="arrow merch-left" aria-label="Previous merch item">
+            <i class="bi bi-arrow-left-circle"></i>
+          </button>
+
+          <div class="merch-stage" id="merchStage"></div>
+
+          <button class="arrow merch-right" aria-label="Next merch item">
+            <i class="bi bi-arrow-right-circle"></i>
+          </button>
+        </div>
+
+        <div class="merch-footer">
+          <a class="btn primary full" href="https://mr-distort-shop.fourthwall.com" target="_blank" rel="noopener">
+            <i class="bi bi-shop"></i> Visit the Store
+          </a>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Row 3: Stats Carousel -->
+  <!-- Row 3: Stats Carousel / Bio / Contact -->
   <div class="row row-work fade-in bounce delay-3">
     <div class="box stats-box">
       <div class="carousel">
@@ -100,8 +109,8 @@
       <div class="box-content">
         <div class="panel-title">Bio</div>
         <p>
-          I’m Mr. Distort — I stream, I create, and I turn everyday moments into content. Expect high energy, real community vibes,
-          and a little bit of “how did we even get here?” every session.
+          I’m Mr. Distort — I stream, I create, and I turn everyday moments into content. Expect high energy, real
+          community vibes, and a little bit of “how did we even get here?” every session.
         </p>
         <p class="muted">
           (Stats are Phase 1 manual right now. Phase 2 = auto updates via API.)
@@ -137,7 +146,7 @@
     <div class="modal-content">
       <span class="close" id="closeContactModal">&times;</span>
       <h3 class="modal-title">Contact MR. DISTORT</h3>
-      <p class="modal-sub">Fill this out and it’ll open an email draft (Phase 1). Phase 2 can submit to a real form endpoint.</p>
+      <p class="modal-sub">Phase 1 opens an email draft. Phase 2 can submit to a real form endpoint.</p>
 
       <form id="contactForm" class="contact-form">
         <label>
