@@ -1,51 +1,53 @@
 document.addEventListener("DOMContentLoaded", () => {
   // =========
-  // Links
+  // Social links (Discord + Merch removed)
   // =========
   const socials = [
-    { name: "Twitch", url: "https://www.twitch.tv/mrdistort", icon: "bi-twitch" },
-    { name: "Kick", url: "https://www.kick.com/mr-distort", icon: "bi-lightning-charge-fill" },
-    { name: "TikTok", url: "https://www.tiktok.com/@mr_distort", icon: "bi-tiktok" },
-    { name: "Instagram", url: "https://www.instagram.com/mr_distort", icon: "bi-instagram" },
-    { name: "YouTube", url: "https://www.youtube.com/@Mr_Distort", icon: "bi-youtube" },
-    { name: "Discord", url: "https://discord.gg/uKDFg4mVqF", icon: "bi-discord" },
-    { name: "Merch", url: "https://mr-distort-shop.fourthwall.com", icon: "bi-bag" },
+    { name: "Twitch", url: "https://www.twitch.tv/mrdistort", icon: "bi-twitch", brand: "twitch" },
+    { name: "Kick", url: "https://www.kick.com/mr-distort", icon: null, brand: "kick" },
+    { name: "TikTok", url: "https://www.tiktok.com/@mr_distort", icon: "bi-tiktok", brand: "tiktok" },
+    { name: "Instagram", url: "https://www.instagram.com/mr_distort", icon: "bi-instagram", brand: "instagram" },
+    { name: "YouTube", url: "https://www.youtube.com/@Mr_Distort", icon: "bi-youtube", brand: "youtube" },
   ];
 
-  // Top nav
-  const topNav = document.getElementById("topNav");
-  if (topNav) {
-    topNav.innerHTML = socials.slice(0, 6).map(s => `
-      <a class="nav-link" href="${s.url}" target="_blank" rel="noopener">
-        <i class="bi ${s.icon}"></i> ${s.name}
-      </a>
-    `).join("");
-  }
-
-  // Social links panel
   const socialLinks = document.getElementById("socialLinks");
   if (socialLinks) {
-    socialLinks.innerHTML = socials.map(s => `
-      <a href="${s.url}" target="_blank" rel="noopener">
-        <span class="left">
-          <i class="bi ${s.icon}"></i>
-          <strong>${s.name}</strong>
-        </span>
-        <span class="muted"><i class="bi bi-box-arrow-up-right"></i></span>
-      </a>
-    `).join("");
+    socialLinks.innerHTML = socials.map(s => {
+      const leftIcon = s.brand === "kick"
+        ? `<span class="kick-badge" aria-hidden="true">K</span>`
+        : `<i class="bi ${s.icon} ${brandIconClass(s.brand)}" aria-hidden="true"></i>`;
+
+      return `
+        <a href="${s.url}" target="_blank" rel="noopener">
+          <span class="left">
+            ${leftIcon}
+            <strong>${s.name}</strong>
+          </span>
+          <span class="right"><i class="bi bi-box-arrow-up-right"></i></span>
+        </a>
+      `;
+    }).join("");
+  }
+
+  function brandIconClass(brand) {
+    switch (brand) {
+      case "twitch": return "icon-twitch";
+      case "tiktok": return "icon-tiktok";
+      case "instagram": return "icon-instagram";
+      case "youtube": return "icon-youtube";
+      default: return "";
+    }
   }
 
   // =========
   // Phase 1 Stats (manual)
   // =========
-  // Update these anytime you want. Phase 2 will swap this out for a /stats API call.
   const platformStats = [
-    { platform: "Twitch", icon: "bi-twitch", value: "370", label: "Followers" },
-    { platform: "Kick", icon: "bi-lightning-charge-fill", value: "19", label: "Followers" },
-    { platform: "TikTok", icon: "bi-tiktok", value: "151", label: "Followers" },
-    { platform: "Instagram", icon: "bi-instagram", value: "85", label: "Followers" },
-    { platform: "YouTube", icon: "bi-youtube", value: "462", label: "Subscribers" },
+    { platform: "Twitch", brand: "twitch", value: "—", label: "Followers" },
+    { platform: "Kick", brand: "kick", value: "—", label: "Followers" },
+    { platform: "TikTok", brand: "tiktok", value: "—", label: "Followers" },
+    { platform: "Instagram", brand: "instagram", value: "—", label: "Followers" },
+    { platform: "YouTube", brand: "youtube", value: "—", label: "Subscribers" },
   ];
 
   let statIndex = 0;
@@ -56,15 +58,30 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderStat() {
     if (!statsContent) return;
     const s = platformStats[statIndex];
+
+    const iconHtml = s.brand === "kick"
+      ? `<span class="kick-badge" aria-hidden="true">K</span>`
+      : `<i class="bi ${platformBrandToBootstrapIcon(s.brand)} platform-icon ${brandIconClass(s.brand)}" aria-hidden="true"></i>`;
+
     statsContent.innerHTML = `
       <div class="stat-platform">
-        <i class="bi ${s.icon}"></i>
+        ${iconHtml}
         <span>${s.platform}</span>
       </div>
       <div class="stat-number">${s.value}</div>
       <div class="stat-label">${s.label}</div>
       <div class="muted">Manual for now • Phase 2 = auto</div>
     `;
+  }
+
+  function platformBrandToBootstrapIcon(brand) {
+    switch (brand) {
+      case "twitch": return "bi-twitch";
+      case "tiktok": return "bi-tiktok";
+      case "instagram": return "bi-instagram";
+      case "youtube": return "bi-youtube";
+      default: return "bi-globe";
+    }
   }
 
   if (statsLeft) statsLeft.addEventListener("click", () => {
@@ -80,7 +97,67 @@ document.addEventListener("DOMContentLoaded", () => {
   renderStat();
 
   // =========
-  // Affiliate Modal (logos + categories)
+  // Merch carousel (with error fallback)
+  // =========
+  // IMPORTANT: GitHub Pages is case-sensitive.
+  // Make sure these EXACT filenames exist:
+  // images/merch/coffee.png
+  // images/merch/crewneck.png
+  // images/merch/cropped.png
+  // images/merch/shirt.png
+  const merchItems = [
+    { title: "Logo Mug", img: "images/merch/coffee.png", url: "https://mr-distort-shop.fourthwall.com" },
+    { title: "Crewneck", img: "images/merch/crewneck.png", url: "https://mr-distort-shop.fourthwall.com" },
+    { title: "Cropped Hoodie", img: "images/merch/cropped.png", url: "https://mr-distort-shop.fourthwall.com" },
+    { title: "T-Shirt", img: "images/merch/shirt.png", url: "https://mr-distort-shop.fourthwall.com" },
+  ];
+
+  let merchIndex = 0;
+  const merchStage = document.getElementById("merchStage");
+  const merchLeft = document.querySelector(".merch-left");
+  const merchRight = document.querySelector(".merch-right");
+
+  function renderMerch() {
+    if (!merchStage) return;
+    const item = merchItems[merchIndex];
+
+    merchStage.innerHTML = `
+      <a href="${item.url}" target="_blank" rel="noopener" style="text-decoration:none; width:100%;">
+        <img class="merch-image" src="${item.img}" alt="${item.title}">
+      </a>
+      <div class="merch-title">${item.title}</div>
+      <div class="muted">Tap image to view</div>
+    `;
+
+    // Add error fallback so you can SEE broken paths
+    const imgEl = merchStage.querySelector("img");
+    if (imgEl) {
+      imgEl.onerror = () => {
+        console.warn("[Merch image failed to load]", item.img);
+        merchStage.innerHTML = `
+          <div class="merch-title">${item.title}</div>
+          <div class="muted">Image not found:</div>
+          <div class="muted" style="word-break:break-all;">${item.img}</div>
+          <div class="muted">Fix the filename/folder in your repo and refresh.</div>
+        `;
+      };
+    }
+  }
+
+  if (merchLeft) merchLeft.addEventListener("click", () => {
+    merchIndex = (merchIndex - 1 + merchItems.length) % merchItems.length;
+    renderMerch();
+  });
+
+  if (merchRight) merchRight.addEventListener("click", () => {
+    merchIndex = (merchIndex + 1) % merchItems.length;
+    renderMerch();
+  });
+
+  renderMerch();
+
+  // =========
+  // Affiliate Modal (unchanged HTML; CSS restored above)
   // =========
   const affiliates = [
     {
@@ -96,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Keychron",
           url: "https://www.keychron.com/?ref=MRDISTORT",
           logo: "images/affiliates/keychron.jpeg",
-          blurb: "Keyboards that feel illegal"
+          blurb: "Keyboards"
         }
       ]
     },
@@ -107,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Dubby Energy",
           url: "https://www.dubby.gg/discount/MRDISTORT?ref=rxvggddk",
           logo: "images/affiliates/dubby.png",
-          blurb: "Energy drink for gamers"
+          blurb: "Energy drink"
         }
       ]
     },
@@ -118,7 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "HidrateSpark",
           url: "https://hidratespark.com/stephen35",
           logo: "images/affiliates/hidrate.png",
-          blurb: "Smart water bottle (hydration but make it tech)"
+          blurb: "Smart water bottle"
         }
       ]
     },
@@ -183,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (closeAffiliateModal) closeAffiliateModal.addEventListener("click", () => closeModal(affiliateModal));
 
   // =========
-  // Contact Modal + Phase 1 submit (mailto)
+  // Contact Modal + Phase 1 mailto
   // =========
   const contactModal = document.getElementById("contactModal");
   const openContactModal = document.getElementById("openContactModal");
@@ -193,13 +270,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (openContactModal) openContactModal.addEventListener("click", () => openModal(contactModal));
   if (closeContactModal) closeContactModal.addEventListener("click", () => closeModal(contactModal));
 
-  // Click outside modal to close
   window.addEventListener("click", (e) => {
     if (e.target === affiliateModal) closeModal(affiliateModal);
     if (e.target === contactModal) closeModal(contactModal);
   });
 
-  // ESC to close
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeModal(affiliateModal);
@@ -222,9 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `Name: ${name}\nEmail: ${email}\nReason: ${reason}\n\nMessage:\n${message}\n`
       );
 
-      // Phase 1: open email client
-      // Change this email to whatever you want to receive messages at:
-      const to = "mrdistort1@ mail.com";
+      const to = "yourbusiness@email.com"; // <-- change this
       window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
 
       closeModal(contactModal);
