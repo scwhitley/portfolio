@@ -68,6 +68,16 @@ h2, h3 { margin: 0.6rem 0; }
   padding: 6px 6px;
 }
 
+p{
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+.muted{
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
 /* DISPLAY FONT */
 
 h1, h2, h3, h4,
