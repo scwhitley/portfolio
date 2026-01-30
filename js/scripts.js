@@ -41,11 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========
   // Update these anytime you want. Phase 2 will swap this out for a /stats API call.
   const platformStats = [
-    { platform: "Twitch", icon: "bi-twitch", value: "—", label: "Followers" },
-    { platform: "Kick", icon: "bi-lightning-charge-fill", value: "—", label: "Followers" },
-    { platform: "TikTok", icon: "bi-tiktok", value: "—", label: "Followers" },
-    { platform: "Instagram", icon: "bi-instagram", value: "—", label: "Followers" },
-    { platform: "YouTube", icon: "bi-youtube", value: "—", label: "Subscribers" },
+    { platform: "Twitch", icon: "bi-twitch", value: "370", label: "Followers" },
+    { platform: "Kick", icon: "bi-lightning-charge-fill", value: "19", label: "Followers" },
+    { platform: "TikTok", icon: "bi-tiktok", value: "151", label: "Followers" },
+    { platform: "Instagram", icon: "bi-instagram", value: "85", label: "Followers" },
+    { platform: "YouTube", icon: "bi-youtube", value: "462", label: "Subscribers" },
   ];
 
   let statIndex = 0;
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Phase 1: open email client
       // Change this email to whatever you want to receive messages at:
-      const to = "yourbusiness@email.com";
+      const to = "mrdistort1@ mail.com";
       window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
 
       closeModal(contactModal);
