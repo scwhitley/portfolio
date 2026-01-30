@@ -1,194 +1,234 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Work Experience Carousel
-  const workExperiences = [
-    {
-      date: "June 2025 – Present",
-      title: "Customer Success Manager - Automation",
-      company: "IBM",
-      description: "Guide customers through onboarding and ongoing support to ensure effective use of IBM products. Leverage IBM tools and monitoring adoption to help drive continuous improvement and long-term success."
-    },
-    {
-      date: "June 2023 – May 2025",
-      title: "Systems Analyst I",
-      company: "Fidelity Investments",
-      description: "Led cross-functional coordination and managed program execution to deliver projects on time and within budget, including legacy-to-cloud migrations."
-    },
-    {
-      date: "January 2020 – January 2023",
-      title: "Technical Consulting Engineer",
-      company: "Cisco Systems",
-      description: "Led technical support for 1,000+ customer cases and delivered consulting for key project deployments. Streamlined troubleshooting through improved documentation and cross-functional collaboration on automation and crisis response."
-    },
-    {
-      date: "February 2016 – December 2019",
-      title: "Retail Sales Consultant",
-      company: "AT&T",
-      description: "Strengthened customer engagement through customized solutions and cross-team coordination, ensuring high adoption and satisfaction. Surpassed sales targets and contributed to strategic brand initiatives through outreach programs."
-    }
+document.addEventListener("DOMContentLoaded", () => {
+  // =========
+  // Links
+  // =========
+  const socials = [
+    { name: "Twitch", url: "https://www.twitch.tv/mrdistort", icon: "bi-twitch" },
+    { name: "Kick", url: "https://www.kick.com/mr-distort", icon: "bi-lightning-charge-fill" },
+    { name: "TikTok", url: "https://www.tiktok.com/@mr_distort", icon: "bi-tiktok" },
+    { name: "Instagram", url: "https://www.instagram.com/mr_distort", icon: "bi-instagram" },
+    { name: "YouTube", url: "https://www.youtube.com/@Mr_Distort", icon: "bi-youtube" },
+    { name: "Discord", url: "https://discord.gg/uKDFg4mVqF", icon: "bi-discord" },
+    { name: "Merch", url: "https://mr-distort-shop.fourthwall.com", icon: "bi-bag" },
   ];
 
-  const workCarousel = document.querySelector(".work-content");
-  const workLeft = document.querySelector(".work-left");
-  const workRight = document.querySelector(".work-right");
+  // Top nav
+  const topNav = document.getElementById("topNav");
+  if (topNav) {
+    topNav.innerHTML = socials.slice(0, 6).map(s => `
+      <a class="nav-link" href="${s.url}" target="_blank" rel="noopener">
+        <i class="bi ${s.icon}"></i> ${s.name}
+      </a>
+    `).join("");
+  }
 
-  let workIndex = 0;
+  // Social links panel
+  const socialLinks = document.getElementById("socialLinks");
+  if (socialLinks) {
+    socialLinks.innerHTML = socials.map(s => `
+      <a href="${s.url}" target="_blank" rel="noopener">
+        <span class="left">
+          <i class="bi ${s.icon}"></i>
+          <strong>${s.name}</strong>
+        </span>
+        <span class="muted"><i class="bi bi-box-arrow-up-right"></i></span>
+      </a>
+    `).join("");
+  }
 
-  function updateWorkContent() {
-    const exp = workExperiences[workIndex];
-    workCarousel.innerHTML = `
-      <div class="work-item">
-        <p class="work-title">${exp.title}</p>
-        <p class="work-company">${exp.company}</p>
-        <p class="work-date">${exp.date}</p>
-        <p class="work-desc">${exp.description}</p>
+  // =========
+  // Phase 1 Stats (manual)
+  // =========
+  // Update these anytime you want. Phase 2 will swap this out for a /stats API call.
+  const platformStats = [
+    { platform: "Twitch", icon: "bi-twitch", value: "—", label: "Followers" },
+    { platform: "Kick", icon: "bi-lightning-charge-fill", value: "—", label: "Followers" },
+    { platform: "TikTok", icon: "bi-tiktok", value: "—", label: "Followers" },
+    { platform: "Instagram", icon: "bi-instagram", value: "—", label: "Followers" },
+    { platform: "YouTube", icon: "bi-youtube", value: "—", label: "Subscribers" },
+  ];
+
+  let statIndex = 0;
+  const statsContent = document.querySelector(".stats-content");
+  const statsLeft = document.querySelector(".stats-left");
+  const statsRight = document.querySelector(".stats-right");
+
+  function renderStat() {
+    if (!statsContent) return;
+    const s = platformStats[statIndex];
+    statsContent.innerHTML = `
+      <div class="stat-platform">
+        <i class="bi ${s.icon}"></i>
+        <span>${s.platform}</span>
       </div>
+      <div class="stat-number">${s.value}</div>
+      <div class="stat-label">${s.label}</div>
+      <div class="muted">Manual for now • Phase 2 = auto</div>
     `;
   }
 
-  workLeft?.addEventListener("click", () => {
-    workIndex = (workIndex - 1 + workExperiences.length) % workExperiences.length;
-    updateWorkContent();
+  if (statsLeft) statsLeft.addEventListener("click", () => {
+    statIndex = (statIndex - 1 + platformStats.length) % platformStats.length;
+    renderStat();
   });
 
-  workRight?.addEventListener("click", () => {
-    workIndex = (workIndex + 1) % workExperiences.length;
-    updateWorkContent();
+  if (statsRight) statsRight.addEventListener("click", () => {
+    statIndex = (statIndex + 1) % platformStats.length;
+    renderStat();
   });
 
-  updateWorkContent();
+  renderStat();
 
-  // Education Carousel
-  const educationItems = [
+  // =========
+  // Affiliate Modal (logos + categories)
+  // =========
+  const affiliates = [
     {
-      degree: "<em>Master of Information Science</em>",
-      school: "<strong>North Carolina Central University</strong>",
-      date: "Graduated: December 2019",
-      achievements: `
-        <br><strong>Activities and Achievements</strong><br>
-        School of Library and Information Science Visionary Award
-      `
+      category: "Streaming Gear",
+      items: [
+        {
+          name: "OBSBOT",
+          url: "https://www.obsbot.com/?rfsn=8969544.bff71d&utm_source=refersion&utm_medium=affiliate&utm_campaign=8969544.bff71d",
+          logo: "images/affiliates/obsbot.png",
+          blurb: "Cameras + creator gear"
+        },
+        {
+          name: "Keychron",
+          url: "https://www.keychron.com/?ref=MRDISTORT",
+          logo: "images/affiliates/keychron.jpeg",
+          blurb: "Keyboards that feel illegal"
+        }
+      ]
     },
     {
-      degree: "<em>Bachelors of Science in Marketing</em>",
-      school: "<strong>Wingate University</strong>",
-      date: "Graduated: May 2011",
-      achievements: `
-        <br><strong>Activities and Achievements</strong><br>
-        Phi Beta Sigma Fraternity, Inc.<br>
-        Delta Sigma Pi, International Business Fraternity<br>
-        2009–2010 Dean's List
-      `
+      category: "Energy",
+      items: [
+        {
+          name: "Dubby Energy",
+          url: "https://www.dubby.gg/discount/MRDISTORT?ref=rxvggddk",
+          logo: "images/affiliates/dubby.png",
+          blurb: "Energy drink for gamers"
+        }
+      ]
+    },
+    {
+      category: "Tech / Lifestyle",
+      items: [
+        {
+          name: "HidrateSpark",
+          url: "https://hidratespark.com/stephen35",
+          logo: "images/affiliates/hidrate.png",
+          blurb: "Smart water bottle (hydration but make it tech)"
+        }
+      ]
+    },
+    {
+      category: "Collectibles",
+      items: [
+        {
+          name: "Neosabers",
+          url: "https://neosabers.com/?ref=MRDISTORT",
+          logo: "images/affiliates/neosabers.png",
+          blurb: "Replica lightsabers"
+        }
+      ]
     }
   ];
 
-  const eduCarousel = document.querySelector(".edu-content");
-  const eduLeft = document.querySelector(".edu-left");
-  const eduRight = document.querySelector(".edu-right");
+  const affiliateModal = document.getElementById("affiliateModal");
+  const affiliateBody = document.getElementById("affiliateModalBody");
+  const openAffiliateModal = document.getElementById("openAffiliateModal");
+  const closeAffiliateModal = document.getElementById("closeAffiliateModal");
 
-  let eduIndex = 0;
+  function buildAffiliateModal() {
+    if (!affiliateBody) return;
 
-  function updateEducationContent() {
-    const edu = educationItems[eduIndex];
-    eduCarousel.innerHTML = `
-      <div class="education-item">
-        <h3>${edu.degree}</h3>
-        <p>${edu.school}</p>
-        <small>${edu.date}</small>
-        <p>${edu.achievements}</p>
+    affiliateBody.innerHTML = affiliates.map(cat => `
+      <div class="affiliate-category">
+        <h4>${cat.category}</h4>
+        <div class="affiliate-items">
+          ${cat.items.map(item => `
+            <div class="affiliate-card">
+              <img class="affiliate-logo" src="${item.logo}" alt="${item.name} logo">
+              <div class="affiliate-meta">
+                <div class="affiliate-name">${item.name}</div>
+                <div class="affiliate-blurb">${item.blurb || ""}</div>
+              </div>
+              <a class="btn ghost" href="${item.url}" target="_blank" rel="noopener">
+                Shop <i class="bi bi-box-arrow-up-right"></i>
+              </a>
+            </div>
+          `).join("")}
+        </div>
       </div>
-    `;
+    `).join("");
   }
 
-  eduLeft?.addEventListener("click", () => {
-    eduIndex = (eduIndex - 1 + educationItems.length) % educationItems.length;
-    updateEducationContent();
-  });
-
-  eduRight?.addEventListener("click", () => {
-    eduIndex = (eduIndex + 1) % educationItems.length;
-    updateEducationContent();
-  });
-
-  updateEducationContent();
-
-  // Sneaker Carousel Modal
-const sneakerItems = [
-  {
-    image: "../images/travis.jpeg",
-    text: "Air Jordan 6: Travis Scott British Khaki"
-  },
-  {
-    image: "../images/flint.jpeg",
-    text: "Air Jordan 13: Flint"
-  },
-  {
-    image: "../images/china.jpeg",
-    text: "Air Jordan 7: Greater China"
+  function openModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.style.display = "block";
+    document.body.style.overflow = "hidden";
   }
-];
 
-const sneakerModal = document.getElementById("sneakerModal");
-const openSneakerBtn = document.getElementById("openSneakerModal");
-const closeSneakerBtn = document.getElementById("closeSneakerModal");
-
-const sneakerCarouselContent = document.getElementById("sneakerCarouselContent");
-const sneakerLeftBtn = document.getElementById("sneakerLeft");
-const sneakerRightBtn = document.getElementById("sneakerRight");
-
-let sneakerIndex = 0;
-
-function updateSneakerContent() {
-  const item = sneakerItems[sneakerIndex];
-  sneakerCarouselContent.innerHTML = `
-    <img src="${item.image}" alt="Sneaker Image" class="shoe-img" />
-    <p>${item.text}</p>
-  `;
-}
-
-openSneakerBtn?.addEventListener("click", (e) => {
-  e.preventDefault();
-  sneakerModal.style.display = "block";
-  updateSneakerContent();
-});
-
-closeSneakerBtn?.addEventListener("click", () => {
-  sneakerModal.style.display = "none";
-});
-
-window.addEventListener("click", (e) => {
-  if (e.target === sneakerModal) {
-    sneakerModal.style.display = "none";
+  function closeModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.style.display = "none";
+    document.body.style.overflow = "";
   }
-});
 
-sneakerLeftBtn?.addEventListener("click", () => {
-  sneakerIndex = (sneakerIndex - 1 + sneakerItems.length) % sneakerItems.length;
-  updateSneakerContent();
-});
+  if (openAffiliateModal) {
+    buildAffiliateModal();
+    openAffiliateModal.addEventListener("click", () => openModal(affiliateModal));
+  }
+  if (closeAffiliateModal) closeAffiliateModal.addEventListener("click", () => closeModal(affiliateModal));
 
-sneakerRightBtn?.addEventListener("click", () => {
-  sneakerIndex = (sneakerIndex + 1) % sneakerItems.length;
-  updateSneakerContent();
-});
+  // =========
+  // Contact Modal + Phase 1 submit (mailto)
+  // =========
+  const contactModal = document.getElementById("contactModal");
+  const openContactModal = document.getElementById("openContactModal");
+  const closeContactModal = document.getElementById("closeContactModal");
+  const contactForm = document.getElementById("contactForm");
 
+  if (openContactModal) openContactModal.addEventListener("click", () => openModal(contactModal));
+  if (closeContactModal) closeContactModal.addEventListener("click", () => closeModal(contactModal));
 
-  // Modal logic for tech window
-  const modal = document.getElementById("techModal");
-  const openModalBtn = document.getElementById("openModal");
-  const closeModalBtn = document.getElementById("closeModal");
-
-  openModalBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    modal.style.display = "block";
-  });
-
-  closeModalBtn?.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
+  // Click outside modal to close
   window.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
+    if (e.target === affiliateModal) closeModal(affiliateModal);
+    if (e.target === contactModal) closeModal(contactModal);
+  });
+
+  // ESC to close
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeModal(affiliateModal);
+      closeModal(contactModal);
     }
   });
+
+  if (contactForm) {
+    contactForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const data = new FormData(contactForm);
+      const name = data.get("name");
+      const email = data.get("email");
+      const reason = data.get("reason");
+      const message = data.get("message");
+
+      const subject = encodeURIComponent(`[MR. DISTORT] ${reason} — ${name}`);
+      const body = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\nReason: ${reason}\n\nMessage:\n${message}\n`
+      );
+
+      // Phase 1: open email client
+      // Change this email to whatever you want to receive messages at:
+      const to = "yourbusiness@email.com";
+      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+
+      closeModal(contactModal);
+      contactForm.reset();
+    });
+  }
 });
