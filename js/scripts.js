@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Phase 1 Stats (manual)
   // =========
   const platformStats = [
-    { platform: "Twitch", brand: "twitch", value: "370", label: "Followers" },
+    { platform: "Twitch", brand: "twitch", value: "371", label: "Followers" },
     { platform: "Kick", brand: "kick", value: "19", label: "Followers" },
     { platform: "TikTok", brand: "tiktok", value: "157", label: "Followers" },
     { platform: "Instagram", brand: "instagram", value: "85", label: "Followers" },
