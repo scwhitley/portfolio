@@ -10,6 +10,16 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "YouTube", url: "https://www.youtube.com/@Mr_Distort", icon: "bi-youtube", brand: "youtube" },
   ];
 
+  function brandIconClass(brand) {
+    switch (brand) {
+      case "twitch": return "icon-twitch";
+      case "tiktok": return "icon-tiktok";
+      case "instagram": return "icon-instagram";
+      case "youtube": return "icon-youtube";
+      default: return "";
+    }
+  }
+
   const socialLinks = document.getElementById("socialLinks");
   if (socialLinks) {
     socialLinks.innerHTML = socials.map(s => {
@@ -29,31 +39,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }).join("");
   }
 
-  function brandIconClass(brand) {
-    switch (brand) {
-      case "twitch": return "icon-twitch";
-      case "tiktok": return "icon-tiktok";
-      case "instagram": return "icon-instagram";
-      case "youtube": return "icon-youtube";
-      default: return "";
-    }
-  }
-
   // =========
   // Phase 1 Stats (manual)
   // =========
   const platformStats = [
-    { platform: "Twitch", brand: "twitch", value: "371", label: "Followers" },
-    { platform: "Kick", brand: "kick", value: "19", label: "Followers" },
-    { platform: "TikTok", brand: "tiktok", value: "157", label: "Followers" },
-    { platform: "Instagram", brand: "instagram", value: "85", label: "Followers" },
-    { platform: "YouTube", brand: "youtube", value: "462", label: "Subscribers" },
+    { platform: "Twitch", brand: "twitch", value: "386", label: "Followers" },
+    { platform: "Kick", brand: "kick", value: "22", label: "Followers" },
+    { platform: "TikTok", brand: "tiktok", value: "189", label: "Followers" },
+    { platform: "Instagram", brand: "instagram", value: "109", label: "Followers" },
+    { platform: "YouTube", brand: "youtube", value: "464", label: "Subscribers" },
   ];
 
   let statIndex = 0;
   const statsContent = document.querySelector(".stats-content");
   const statsLeft = document.querySelector(".stats-left");
   const statsRight = document.querySelector(".stats-right");
+
+  function platformBrandToBootstrapIcon(brand) {
+    switch (brand) {
+      case "twitch": return "bi-twitch";
+      case "tiktok": return "bi-tiktok";
+      case "instagram": return "bi-instagram";
+      case "youtube": return "bi-youtube";
+      default: return "bi-globe";
+    }
+  }
 
   function renderStat() {
     if (!statsContent) return;
@@ -73,16 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  function platformBrandToBootstrapIcon(brand) {
-    switch (brand) {
-      case "twitch": return "bi-twitch";
-      case "tiktok": return "bi-tiktok";
-      case "instagram": return "bi-instagram";
-      case "youtube": return "bi-youtube";
-      default: return "bi-globe";
-    }
-  }
-
   if (statsLeft) statsLeft.addEventListener("click", () => {
     statIndex = (statIndex - 1 + platformStats.length) % platformStats.length;
     renderStat();
@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========
   // Merch carousel (with error fallback)
   // =========
-  // IMPORTANT: GitHub Pages is case-sensitive.
   // Make sure these EXACT filenames exist:
   // images/merch/coffee.png
   // images/merch/crewneck.png
@@ -128,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="muted">Tap image to view</div>
     `;
 
-    // Add error fallback so you can SEE broken paths
     const imgEl = merchStage.querySelector("img");
     if (imgEl) {
       imgEl.onerror = () => {
@@ -156,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderMerch();
 
   // =========
-  // Affiliate Modal (unchanged HTML; CSS restored above)
+  // Affiliate Modal
   // =========
   const affiliates = [
     {
@@ -213,8 +211,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const affiliateModal = document.getElementById("affiliateModal");
   const affiliateBody = document.getElementById("affiliateModalBody");
-  const openAffiliateModal = document.getElementById("openAffiliateModal");
-  const closeAffiliateModal = document.getElementById("closeAffiliateModal");
+  const openAffiliateModalBtn = document.getElementById("openAffiliateModal");
+  const closeAffiliateModalBtn = document.getElementById("closeAffiliateModal");
 
   function buildAffiliateModal() {
     if (!affiliateBody) return;
@@ -240,6 +238,9 @@ document.addEventListener("DOMContentLoaded", () => {
     `).join("");
   }
 
+  // =========
+  // Modal helpers
+  // =========
   function openModal(modalEl) {
     if (!modalEl) return;
     modalEl.style.display = "block";
@@ -252,52 +253,68 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.style.overflow = "";
   }
 
-  if (openAffiliateModal) {
+  // Affiliate modal wiring
+  if (openAffiliateModalBtn) {
     buildAffiliateModal();
-    openAffiliateModal.addEventListener("click", () => openModal(affiliateModal));
+    openAffiliateModalBtn.addEventListener("click", () => openModal(affiliateModal));
   }
-  if (closeAffiliateModal) closeAffiliateModal.addEventListener("click", () => closeModal(affiliateModal));
+  if (closeAffiliateModalBtn) closeAffiliateModalBtn.addEventListener("click", () => closeModal(affiliateModal));
 
   // =========
-  // Contact Modal + Phase 1 mailto
+  // Contact Modal (Netlify Forms)
   // =========
   const contactModal = document.getElementById("contactModal");
-  const openContactModal = document.getElementById("openContactModal");
-  const closeContactModal = document.getElementById("closeContactModal");
+  const openContactModalBtn = document.getElementById("openContactModal");
+  const closeContactModalBtn = document.getElementById("closeContactModal");
   const contactForm = document.getElementById("contactForm");
 
-  if (openContactModal) openContactModal.addEventListener("click", () => openModal(contactModal));
-  if (closeContactModal) closeContactModal.addEventListener("click", () => closeModal(contactModal));
+  if (openContactModalBtn) {
+    openContactModalBtn.style.cursor = "pointer";
+    openContactModalBtn.addEventListener("click", () => openModal(contactModal));
+  }
+  if (closeContactModalBtn) closeContactModalBtn.addEventListener("click", () => closeModal(contactModal));
 
+  // Submit to Netlify without leaving the page
+  if (contactForm) {
+    contactForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      try {
+        const formData = new FormData(contactForm);
+        const body = new URLSearchParams(formData).toString();
+
+        const res = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body
+        });
+
+        if (!res.ok) throw new Error(`Netlify submit failed: ${res.status}`);
+
+        contactForm.innerHTML = `
+          <div style="padding:12px 4px;">
+            <h3 style="margin:0 0 8px 0;">Sent ✅</h3>
+            <p class="muted" style="margin:0;">Your message reached Mr. Distort. I’ll get back to you ASAP.</p>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong sending the message. Please try again.");
+      }
+    });
+  }
+
+  // Close modals when clicking outside
   window.addEventListener("click", (e) => {
     if (e.target === affiliateModal) closeModal(affiliateModal);
     if (e.target === contactModal) closeModal(contactModal);
   });
 
+  // ESC closes modals
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeModal(affiliateModal);
       closeModal(contactModal);
     }
   });
-
- 
-      const data = new FormData(contactForm);
-      const name = data.get("name");
-      const email = data.get("email");
-      const reason = data.get("reason");
-      const message = data.get("message");
-
-      const subject = encodeURIComponent(`[MR. DISTORT] ${reason} — ${name}`);
-      const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\nReason: ${reason}\n\nMessage:\n${message}\n`
-      );
-
-      const to = "mrdistort1@gmail.com"; // <-- change this
-      
-
-      closeModal(contactModal);
-      contactForm.reset();
-    });
-  }
 });
