@@ -281,10 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  if (contactForm) {
-    contactForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
+ 
       const data = new FormData(contactForm);
       const name = data.get("name");
       const email = data.get("email");
@@ -296,8 +293,8 @@ document.addEventListener("DOMContentLoaded", () => {
         `Name: ${name}\nEmail: ${email}\nReason: ${reason}\n\nMessage:\n${message}\n`
       );
 
-      const to = "yourbusiness@email.com"; // <-- change this
-      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+      const to = "mrdistort1@gmail.com"; // <-- change this
+      
 
       closeModal(contactModal);
       contactForm.reset();
