@@ -176,37 +176,56 @@
       <h3 class="modal-title">Contact Mr. Distort</h3>
       <p class="modal-sub">Want to collab? Want information about custom coding or website? Reach out!</p>
 
-      <form id="contactForm" class="contact-form">
-        <label>
-          Name
-          <input name="name" type="text" placeholder="Your name" required />
-        </label>
+      <form
+  id="contactForm"
+  name="contact"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  class="contact-form"
+>
+  <!-- Netlify required hidden field -->
+  <input type="hidden" name="form-name" value="contact" />
 
-        <label>
-          Email
-          <input name="email" type="email" placeholder="you@email.com" required />
-        </label>
+  <!-- Honeypot field (spam trap) -->
+  <p style="display:none;">
+    <label>
+      Don’t fill this out:
+      <input name="bot-field" />
+    </label>
+  </p>
 
-        <label>
-          Reason
-          <select name="reason" required>
-            <option value="Collab">Collab</option>
-            <option value="Sponsorship">Sponsorship</option>
-            <option value="Question">Question</option>
-            <option value="Patreon">Custom Code/Website</option>
-            <option value="Other">Other</option>
-          </select>
-        </label>
+  <label>
+    Name
+    <input name="name" type="text" placeholder="Your name" required />
+  </label>
 
-        <label>
-          Message
-          <textarea name="message" rows="5" placeholder="Say what you need to say..." required></textarea>
-        </label>
+  <label>
+    Email
+    <input name="email" type="email" placeholder="you@email.com" required />
+  </label>
 
-        <button class="btn primary full" type="submit">
-          <i class="bi bi-send"></i> Send
-        </button>
-      </form>
+  <label>
+    Reason
+    <select name="reason" required>
+      <option value="Collab">Collab</option>
+      <option value="Sponsorship">Sponsorship</option>
+      <option value="Question">Question</option>
+      <option value="Custom Code/Website">Custom Code/Website</option>
+      <option value="Other">Other</option>
+    </select>
+  </label>
+
+  <label>
+    Message
+    <textarea name="message" rows="5" placeholder="Say what you need to say..." required></textarea>
+  </label>
+
+  <button class="btn primary full" type="submit">
+    <i class="bi bi-send"></i> Send
+  </button>
+</form>
+
     </div>
   </div>
 
