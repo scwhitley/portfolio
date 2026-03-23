@@ -43,11 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Phase 1 Stats (manual)
   // =========
   const platformStats = [
-    { platform: "Twitch", brand: "twitch", value: "402", label: "Followers" },
+    { platform: "Twitch", brand: "twitch", value: "408", label: "Followers" },
     { platform: "Kick", brand: "kick", value: "23", label: "Followers" },
-    { platform: "TikTok", brand: "tiktok", value: "188", label: "Followers" },
-    { platform: "Instagram", brand: "instagram", value: "112", label: "Followers" },
-    { platform: "YouTube", brand: "youtube", value: "464", label: "Subscribers" },
+    { platform: "TikTok", brand: "tiktok", value: "192", label: "Followers" },
+    { platform: "Instagram", brand: "instagram", value: "120", label: "Followers" },
+    { platform: "YouTube", brand: "youtube", value: "463", label: "Subscribers" },
   ];
 
   let statIndex = 0;
