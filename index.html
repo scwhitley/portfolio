@@ -157,20 +157,6 @@
     </div>
   </div>
 
-  <!-- Row 4: Guest Book -->
-  <div class="row fade-in bounce delay-3">
-    <div class="box contact-quick-box" id="openGuestBookModal">
-      <div class="box-content">
-        <div class="panel-title">Guest Book</div>
-        <p>Met me at a con, stream, Discord, or out in the wild?</p>
-        <div class="contact-callout">
-          <span class="btn primary full">
-            <i class="bi bi-journal-text"></i> Sign the Guest Book
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Affiliate Modal -->
   <div id="affiliateModal" class="modal">
@@ -239,85 +225,7 @@
     </div>
   </div>
 
-  <!-- Guest Book Modal -->
-  <div id="guestBookModal" class="modal">
-    <div class="modal-content">
-      <span class="close" id="closeGuestBookModal">&times;</span>
-      <h3 class="modal-title">Sign the Guest Book</h3>
-      <p class="modal-sub">Drop your info so we can stay connected in the Distorted Realm.</p>
 
-      <form
-        id="guestBookForm"
-        name="guestbook"
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="guestbook-bot-field"
-        class="contact-form"
-      >
-        <input type="hidden" name="form-name" value="guestbook" />
-
-        <p style="display:none;">
-          <label>
-            Don’t fill this out:
-            <input name="guestbook-bot-field" />
-          </label>
-        </p>
-
-        <label>
-          Name
-          <input name="name" type="text" placeholder="Your name" required />
-        </label>
-
-        <label>
-          Email
-          <input name="email" type="email" placeholder="you@email.com" />
-        </label>
-
-        <label>
-          Social Media Handle
-          <input name="social_handle" type="text" placeholder="@yourhandle" />
-        </label>
-
-        <div class="form-group">
-          <p class="muted" style="margin:0 0 8px 0;">Select all that apply:</p>
-
-          <label>
-            <input type="checkbox" name="roles" value="Streamer" />
-            Streamer
-          </label>
-
-          <label>
-            <input type="checkbox" name="roles" value="Gamer" />
-            Gamer
-          </label>
-
-          <label>
-            <input type="checkbox" name="roles" value="Content Creator" />
-            Content Creator
-          </label>
-
-          <label>
-            <input type="checkbox" name="roles" value="General Supporter" />
-            General Supporter
-          </label>
-        </div>
-
-        <label>
-          Where did we meet?
-          <input name="where_we_met" type="text" placeholder="DreamCon, Twitch, Discord, Instagram..." />
-        </label>
-
-        <label>
-          Leave a message
-          <textarea name="message" rows="4" placeholder="Say what’s up..."></textarea>
-        </label>
-
-        <button class="btn primary full" type="submit">
-          <i class="bi bi-journal-check"></i> Sign Guest Book
-        </button>
-      </form>
-    </div>
-  </div>
 
   <script src="js/scripts.js"></script>
 </body>
