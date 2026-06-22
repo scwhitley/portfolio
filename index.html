@@ -1,15 +1,16 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9PF6FWPPBZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9PF6FWPPBZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'G-9PF6FWPPBZ');
-</script>
+    gtag('config', 'G-9PF6FWPPBZ');
+  </script>
   
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -28,39 +29,36 @@
 
 <body>
   <div class="row row-header fade-in bounce delay-1">
-  <div class="box name-box header-wide">
+    <div class="box name-box header-wide">
+      <div class="brand header-flex">
 
-    <div class="brand header-flex">
+        <!-- LEFT SIDE -->
+        <div class="brand-left">
+          <img class="brand-logo" src="images/logo.jpg" alt="MR. DISTORT logo" />
 
-      <!-- LEFT SIDE -->
-      <div class="brand-left">
-        <img class="brand-logo" src="images/logo.jpg" alt="MR. DISTORT logo" />
-
-        <div class="brand-text">
-          <div class="brand-name">MR. DISTORT</div>
+          <div class="brand-text">
+            <div class="brand-name">MR. DISTORT</div>
+          </div>
         </div>
-      </div>
 
-      <!-- RIGHT SIDE (Spotify Player) -->
-      <div class="spotify-header">
-        <iframe 
-      data-testid="embed-iframe" 
-      style="border-radius:12px" 
-      src="https://open.spotify.com/embed/playlist/1coykh9bvb2JKkkXXRzjWU?utm_source=generator" 
-      width="100%" 
-      height="100" 
-      frameBorder="0" 
-      allowfullscreen="" 
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-      loading="lazy">
-        </iframe>
-      </div>
+        <!-- RIGHT SIDE (Spotify Player) -->
+        <div class="spotify-header">
+          <iframe 
+            data-testid="embed-iframe" 
+            style="border-radius:12px" 
+            src="https://open.spotify.com/embed/playlist/1coykh9bvb2JKkkXXRzjWU?utm_source=generator" 
+            width="100%" 
+            height="100" 
+            frameBorder="0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy">
+          </iframe>
+        </div>
 
+      </div>
     </div>
-
   </div>
-</div>
-
 
   <!-- Row 2: Hero / Socials / Merch Carousel -->
   <div class="row row-intro fade-in bounce delay-2">
@@ -68,7 +66,7 @@
       <div class="box-content">
         <h2 class="hero-title">ENTER THE DISTORTED REALM</h2>
         <p class="hero-sub">
-              Variety Streamer | Music Reactions | Performing Artist
+          Variety Streamer | Music Reactions | Performing Artist
         </p>
 
         <div class="cta-row">
@@ -159,6 +157,21 @@
     </div>
   </div>
 
+  <!-- Row 4: Guest Book -->
+  <div class="row fade-in bounce delay-3">
+    <div class="box contact-quick-box" id="openGuestBookModal">
+      <div class="box-content">
+        <div class="panel-title">Guest Book</div>
+        <p>Met me at a con, stream, Discord, or out in the wild?</p>
+        <div class="contact-callout">
+          <span class="btn primary full">
+            <i class="bi bi-journal-text"></i> Sign the Guest Book
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Affiliate Modal -->
   <div id="affiliateModal" class="modal">
     <div class="modal-content">
@@ -177,58 +190,136 @@
       <p class="modal-sub">Want to collab? Want information about custom coding or website? Reach out!</p>
 
       <form
-  id="contactForm"
-  name="contact"
-  method="POST"
-  data-netlify="true"
-  netlify-honeypot="bot-field"
-  class="contact-form"
->
-  <!-- Netlify required hidden field -->
-  <input type="hidden" name="form-name" value="contact" />
+        id="contactForm"
+        name="contact"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        class="contact-form"
+      >
+        <input type="hidden" name="form-name" value="contact" />
 
-  <!-- Honeypot field (spam trap) -->
-  <p style="display:none;">
-    <label>
-      Don’t fill this out:
-      <input name="bot-field" />
-    </label>
-  </p>
+        <p style="display:none;">
+          <label>
+            Don’t fill this out:
+            <input name="bot-field" />
+          </label>
+        </p>
 
-  <label>
-    Name
-    <input name="name" type="text" placeholder="Your name" required />
-  </label>
+        <label>
+          Name
+          <input name="name" type="text" placeholder="Your name" required />
+        </label>
 
-  <label>
-    Email
-    <input name="email" type="email" placeholder="you@email.com" required />
-  </label>
+        <label>
+          Email
+          <input name="email" type="email" placeholder="you@email.com" required />
+        </label>
 
-  <label>
-    Reason
-    <select name="reason" required>
-      <option value="Collab">Collab</option>
-      <option value="Sponsorship">Sponsorship</option>
-      <option value="Question">Question</option>
-      <option value="Custom Code/Website">Custom Code/Website</option>
-      <option value="Other">Other</option>
-    </select>
-  </label>
+        <label>
+          Reason
+          <select name="reason" required>
+            <option value="Collab">Collab</option>
+            <option value="Sponsorship">Sponsorship</option>
+            <option value="Question">Question</option>
+            <option value="Custom Code/Website">Custom Code/Website</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
 
-  <label>
-    Message
-    <textarea name="message" rows="5" placeholder="Say what you need to say..." required></textarea>
-  </label>
+        <label>
+          Message
+          <textarea name="message" rows="5" placeholder="Say what you need to say..." required></textarea>
+        </label>
 
-  <button class="btn primary full" type="submit">
-    <i class="bi bi-send"></i> Send
-  </button>
-</form>
+        <button class="btn primary full" type="submit">
+          <i class="bi bi-send"></i> Send
+        </button>
+      </form>
+    </div>
+  </div>
 
+  <!-- Guest Book Modal -->
+  <div id="guestBookModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeGuestBookModal">&times;</span>
+      <h3 class="modal-title">Sign the Guest Book</h3>
+      <p class="modal-sub">Drop your info so we can stay connected in the Distorted Realm.</p>
+
+      <form
+        id="guestBookForm"
+        name="guestbook"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="guestbook-bot-field"
+        class="contact-form"
+      >
+        <input type="hidden" name="form-name" value="guestbook" />
+
+        <p style="display:none;">
+          <label>
+            Don’t fill this out:
+            <input name="guestbook-bot-field" />
+          </label>
+        </p>
+
+        <label>
+          Name
+          <input name="name" type="text" placeholder="Your name" required />
+        </label>
+
+        <label>
+          Email
+          <input name="email" type="email" placeholder="you@email.com" />
+        </label>
+
+        <label>
+          Social Media Handle
+          <input name="social_handle" type="text" placeholder="@yourhandle" />
+        </label>
+
+        <div class="form-group">
+          <p class="muted" style="margin:0 0 8px 0;">Select all that apply:</p>
+
+          <label>
+            <input type="checkbox" name="roles" value="Streamer" />
+            Streamer
+          </label>
+
+          <label>
+            <input type="checkbox" name="roles" value="Gamer" />
+            Gamer
+          </label>
+
+          <label>
+            <input type="checkbox" name="roles" value="Content Creator" />
+            Content Creator
+          </label>
+
+          <label>
+            <input type="checkbox" name="roles" value="General Supporter" />
+            General Supporter
+          </label>
+        </div>
+
+        <label>
+          Where did we meet?
+          <input name="where_we_met" type="text" placeholder="DreamCon, Twitch, Discord, Instagram..." />
+        </label>
+
+        <label>
+          Leave a message
+          <textarea name="message" rows="4" placeholder="Say what’s up..."></textarea>
+        </label>
+
+        <button class="btn primary full" type="submit">
+          <i class="bi bi-journal-check"></i> Sign Guest Book
+        </button>
+      </form>
     </div>
   </div>
 
   <script src="js/scripts.js"></script>
 </body>
 </html>
+```
