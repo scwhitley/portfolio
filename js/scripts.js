@@ -1,3 +1,4 @@
+```javascript
 document.addEventListener("DOMContentLoaded", () => {
   // =========
   // Social links (Discord + Merch removed)
@@ -98,11 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========
   // Merch carousel (with error fallback)
   // =========
-  // Make sure these EXACT filenames exist:
-  // images/merch/coffee.png
-  // images/merch/crewneck.png
-  // images/merch/cropped.png
-  // images/merch/shirt.png
   const merchItems = [
     { title: "Logo Mug", img: "images/merch/coffee.png", url: "https://mr-distort-shop.fourthwall.com" },
     { title: "Crewneck", img: "images/merch/crewneck.png", url: "https://mr-distort-shop.fourthwall.com" },
@@ -258,7 +254,10 @@ document.addEventListener("DOMContentLoaded", () => {
     buildAffiliateModal();
     openAffiliateModalBtn.addEventListener("click", () => openModal(affiliateModal));
   }
-  if (closeAffiliateModalBtn) closeAffiliateModalBtn.addEventListener("click", () => closeModal(affiliateModal));
+
+  if (closeAffiliateModalBtn) {
+    closeAffiliateModalBtn.addEventListener("click", () => closeModal(affiliateModal));
+  }
 
   // =========
   // Contact Modal (Netlify Forms)
@@ -272,9 +271,12 @@ document.addEventListener("DOMContentLoaded", () => {
     openContactModalBtn.style.cursor = "pointer";
     openContactModalBtn.addEventListener("click", () => openModal(contactModal));
   }
-  if (closeContactModalBtn) closeContactModalBtn.addEventListener("click", () => closeModal(contactModal));
 
-  // Submit to Netlify without leaving the page
+  if (closeContactModalBtn) {
+    closeContactModalBtn.addEventListener("click", () => closeModal(contactModal));
+  }
+
+  // Submit Contact Form to Netlify without leaving the page
   if (contactForm) {
     contactForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -304,10 +306,60 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // =========
+  // Guest Book Modal (Netlify Forms)
+  // =========
+  const guestBookModal = document.getElementById("guestBookModal");
+  const openGuestBookModalBtn = document.getElementById("openGuestBookModal");
+  const closeGuestBookModalBtn = document.getElementById("closeGuestBookModal");
+  const guestBookForm = document.getElementById("guestBookForm");
+
+  if (openGuestBookModalBtn) {
+    openGuestBookModalBtn.style.cursor = "pointer";
+    openGuestBookModalBtn.addEventListener("click", () => openModal(guestBookModal));
+  }
+
+  if (closeGuestBookModalBtn) {
+    closeGuestBookModalBtn.addEventListener("click", () => closeModal(guestBookModal));
+  }
+
+  // Submit Guest Book Form to Netlify without leaving the page
+  if (guestBookForm) {
+    guestBookForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      try {
+        const formData = new FormData(guestBookForm);
+        const body = new URLSearchParams(formData).toString();
+
+        const res = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body
+        });
+
+        if (!res.ok) throw new Error(`Netlify submit failed: ${res.status}`);
+
+        guestBookForm.innerHTML = `
+          <div style="padding:12px 4px;">
+            <h3 style="margin:0 0 8px 0;">Welcome to the Distorted Realm! ✅</h3>
+            <p class="muted" style="margin:0;">
+              Thanks for signing the Guest Book. Hope to see you around the community!
+            </p>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong signing the guest book. Please try again.");
+      }
+    });
+  }
+
   // Close modals when clicking outside
   window.addEventListener("click", (e) => {
     if (e.target === affiliateModal) closeModal(affiliateModal);
     if (e.target === contactModal) closeModal(contactModal);
+    if (e.target === guestBookModal) closeModal(guestBookModal);
   });
 
   // ESC closes modals
@@ -315,6 +367,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") {
       closeModal(affiliateModal);
       closeModal(contactModal);
+      closeModal(guestBookModal);
     }
   });
 });
+```
