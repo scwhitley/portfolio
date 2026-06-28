@@ -345,24 +345,40 @@ document.addEventListener("DOMContentLoaded", () => {
   if (guestBookForm) {
     guestBookForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+
+      const roles = [...guestBookForm.querySelectorAll('input[name="roles"]:checked')]
+        .map(cb => cb.value);
+
+      if (roles.length === 0) {
+        alert("Please select at least one role (Streamer, Gamer, etc.)");
+        return;
+      }
+
+      const payload = {
+        name: guestBookForm.querySelector('[name="name"]').value,
+        socialName: guestBookForm.querySelector('[name="socialName"]').value,
+        whereMet: guestBookForm.querySelector('[name="whereMet"]').value,
+        roles: roles.join(", "),
+        giveaway: guestBookForm.querySelector('[name="giveaway"]').checked ? "Yes" : "No",
+      };
+
       try {
-        const formData = new FormData(guestBookForm);
-        const body = new URLSearchParams(formData).toString();
-        const res = await fetch("/", {
+        await fetch("https://script.google.com/macros/s/AKfycbwthbAXQOnyq_trZamHqUBJdHiiD-nIDt8UATZos44c34IKwsm2nDaoRvD9DbYqD5i2/exec", {
           method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
         });
-        if (!res.ok) throw new Error(`Netlify submit failed: ${res.status}`);
+
         guestBookForm.innerHTML = `
-          <div style="padding:12px 4px;">
-            <h3 style="margin:0 0 8px 0;">Welcome to the Distorted Realm! ✅</h3>
-            <p class="muted" style="margin:0;">Thanks for signing the Guest Book. Hope to see you around the community!</p>
+          <div style="padding:12px 4px; text-align:center;">
+            <h3 style="margin:0 0 8px 0;">You're in the book! ✅</h3>
+            <p class="muted" style="margin:0;">Welcome to the Distorted Realm. Hope to see you around!</p>
           </div>
         `;
       } catch (err) {
         console.error(err);
-        alert("Something went wrong signing the guest book. Please try again.");
+        alert("Something went wrong. Please try again.");
       }
     });
   }
