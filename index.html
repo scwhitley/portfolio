@@ -225,6 +225,61 @@
   </div>
 </div>
 
+    <!-- DreamCon Guestbook Modal -->
+<div id="guestBookModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeGuestBookModal">&times;</span>
+    <h3 class="modal-title">DreamCon Guestbook</h3>
+    <p class="modal-sub" id="guestbookMessage">Welcome to DreamCon! Sign the guestbook below.</p>
+
+    <form id="guestBookForm" class="contact-form">
+
+      <label>
+        Name
+        <input name="name" type="text" placeholder="Your name" required />
+      </label>
+
+      <label>
+        Social Handle
+        <input name="socialName" type="text" placeholder="@yoursocial" required />
+      </label>
+
+      <label>
+        Where did you meet Mr. Distort?
+        <input name="whereMet" type="text" placeholder="e.g. Artist Alley, Panel Room..." required />
+      </label>
+
+      <label>I am a... <span style="font-size:0.75rem; color:#888;">(select at least one)</span></label>
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input type="checkbox" name="roles" value="Streamer" /> Streamer
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="roles" value="Content Creator" /> Content Creator
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="roles" value="Gamer" /> Gamer
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="roles" value="Supporter" /> Supporter
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="roles" value="Cosplayer" /> Cosplayer
+        </label>
+      </div>
+
+      <label class="checkbox-item giveaway-check">
+        <input type="checkbox" name="giveaway" value="yes" />
+        <span>Enter me in the <strong>DreamCon Giveaway</strong> 🎉</span>
+      </label>
+
+      <button class="btn primary full" type="submit">
+        <i class="bi bi-pen"></i> Sign the Guestbook
+      </button>
+    </form>
+  </div>
+</div>
+
 
 
   <script src="js/scripts.js"></script>
