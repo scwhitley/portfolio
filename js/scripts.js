@@ -208,14 +208,19 @@ loadSchedule();
           logo: "images/affiliates/obsbot.png",
           blurb: "Cameras + creator gear"
         },
-        {
+        {{
           name: "Keychron",
           url: "https://www.keychron.com/?ref=MRDISTORT",
           logo: "images/affiliates/keychron.jpeg",
           blurb: "Keyboards"
-        }
-      ]
-    },
+        },
+        {
+          name: "Razer",
+          url: "https://razer.a9yw.net/c/6818512/642901/10229",
+          logo: "images/affiliates/razer-team-logo.png",
+          blurb: "Gaming peripherals"
+        },
+    
     {
       category: "Energy",
       items: [
