@@ -401,11 +401,69 @@ loadSchedule();
     });
   }
 
-  // Close modals when clicking outside
+  // =========
+  // Subathon Modal
+  // =========
+  const subathonImages = [
+    "images/subathon1.png",
+    "images/subathon2.png"
+  ];
+
+  let subIndex = 0;
+  const subathonModal = document.getElementById("subathonModal");
+  const openSubathonModalBtn = document.getElementById("openSubathonModal");
+  const closeSubathonModalBtn = document.getElementById("closeSubathonModal");
+  const subathonImg = document.getElementById("subathonImg");
+  const subDots = document.querySelectorAll(".sub-dot");
+  const subLeft = document.querySelector(".sub-left");
+  const subRight = document.querySelector(".sub-right");
+
+  function renderSubathon() {
+    if (subathonImg) subathonImg.src = subathonImages[subIndex];
+    subDots.forEach((d, i) => d.classList.toggle("active", i === subIndex));
+  }
+
+  if (subLeft) subLeft.addEventListener("click", () => {
+    subIndex = (subIndex - 1 + subathonImages.length) % subathonImages.length;
+    renderSubathon();
+  });
+
+  if (subRight) subRight.addEventListener("click", () => {
+    subIndex = (subIndex + 1) % subathonImages.length;
+    renderSubathon();
+  });
+
+  subDots.forEach(dot => {
+    dot.addEventListener("click", () => {
+      subIndex = parseInt(dot.dataset.index);
+      renderSubathon();
+    });
+  });
+
+  if (openSubathonModalBtn) {
+    openSubathonModalBtn.addEventListener("click", () => {
+      subIndex = 0;
+      renderSubathon();
+      openModal(subathonModal);
+    });
+  }
+
+  if (closeSubathonModalBtn) {
+    closeSubathonModalBtn.addEventListener("click", () => closeModal(subathonModal));
+  }
+
   window.addEventListener("click", (e) => {
-    if (e.target === affiliateModal) closeModal(affiliateModal);
-    if (e.target === contactModal) closeModal(contactModal);
-    if (e.target === guestBookModal) closeModal(guestBookModal);
+    if (e.target === subathonModal) closeModal(subathonModal);
+  });
+
+  // Close modals when clicking outside
+ window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeModal(affiliateModal);
+      closeModal(contactModal);
+      closeModal(guestBookModal);
+      closeModal(subathonModal);
+    }
   });
 
   // ESC closes modals
@@ -414,6 +472,7 @@ loadSchedule();
       closeModal(affiliateModal);
       closeModal(contactModal);
       closeModal(guestBookModal);
+      closeModal(subathonModal);
     }
   });
 });
