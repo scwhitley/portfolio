@@ -208,7 +208,7 @@ loadSchedule();
           logo: "images/affiliates/obsbot.png",
           blurb: "Cameras + creator gear"
         },
-        {{
+        {
           name: "Keychron",
           url: "https://www.keychron.com/?ref=MRDISTORT",
           logo: "images/affiliates/keychron.jpeg",
