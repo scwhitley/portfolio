@@ -363,12 +363,18 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
-        await fetch("https://script.google.com/macros/s/AKfycbzs4xkctSMSsK2ttM_tPRfFGWphfqWW667vmzOd8zdUwRZzXnidf3MyrHmyHKfiPXc-wQ/exec", {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzs4xkctSMSsK2ttM_tPRfFGWphfqWW667vmzOd8zdUwRZzXnidf3MyrHmyHKfiPXc-wQ/exec";
+        const params = new URLSearchParams();
+          params.append("name", payload.name);
+          params.append("socialName", payload.socialName);
+          params.append("whereMet", payload.whereMet);
+          params.append("roles", payload.roles);
+          params.append("giveaway", payload.giveaway);
+
+await fetch(SCRIPT_URL + "?" + params.toString(), {
+  method: "GET",
+  mode: "no-cors"
+});
 
         guestBookForm.innerHTML = `
           <div style="padding:12px 4px; text-align:center;">
