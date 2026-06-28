@@ -177,6 +177,54 @@ h1, h2, h3, h4,
     letter-spacing: 0.5px;
 }
 
+/* Subathon Modal */
+.modal-content-img {
+  max-width: 860px;
+}
+
+.subathon-carousel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.subathon-stage {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  max-height: 70vh;
+  border-radius: 10px;
+}
+
+.subathon-stage img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  object-fit: contain;
+}
+
+.subathon-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.sub-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sub-dot.active {
+  background: var(--accent, #cc0000);
+}
 
 .brand-logo{
   width: 84px;
