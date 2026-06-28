@@ -342,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
     closeGuestBookModalBtn.addEventListener("click", () => closeModal(guestBookModal));
   }
 
-  if (guestBookForm) {
+ if (guestBookForm) {
     guestBookForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
-        await fetch("https://script.google.com/macros/s/AKfycbwthbAXQOnyq_trZamHqUBJdHiiD-nIDt8UATZos44c34IKwsm2nDaoRvD9DbYqD5i2/exec", {
+        await fetch("https://script.google.com/macros/s/AKfycbzs4xkctSMSsK2ttM_tPRfFGWphfqWW667vmzOd8zdUwRZzXnidf3MyrHmyHKfiPXc-wQ/exec", {
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "application/json" },
