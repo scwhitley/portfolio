@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Upcoming Streams Schedule (Google Calendar iCal)
 // =========
 const ICAL_URL = "https://calendar.google.com/calendar/ical/mrdistort1%40gmail.com/public/basic.ics";
-const CORS_PROXY = "https://corsproxy.io/?";
+const CORS_PROXY = "https://api.allorigins.win/raw?url=";
 const scheduleList = document.getElementById("scheduleList");
 
 async function loadSchedule() {
