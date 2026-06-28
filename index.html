@@ -280,48 +280,6 @@
   </div>
 </div>
 
-    if (guestBookForm) {
-    guestBookForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const roles = [...guestBookForm.querySelectorAll('input[name="roles"]:checked')]
-        .map(cb => cb.value);
-
-      if (roles.length === 0) {
-        alert("Please select at least one role (Streamer, Gamer, etc.)");
-        return;
-      }
-
-      const payload = {
-        name: guestBookForm.querySelector('[name="name"]').value,
-        socialName: guestBookForm.querySelector('[name="socialName"]').value,
-        whereMet: guestBookForm.querySelector('[name="whereMet"]').value,
-        roles: roles.join(", "),
-        giveaway: guestBookForm.querySelector('[name="giveaway"]').checked ? "Yes" : "No",
-      };
-
-      try {
-        await fetch("https://script.google.com/macros/s/AKfycbzs4xkctSMSsK2ttM_tPRfFGWphfqWW667vmzOd8zdUwRZzXnidf3MyrHmyHKfiPXc-wQ/exec", {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-
-        guestBookForm.innerHTML = `
-          <div style="padding:12px 4px; text-align:center;">
-            <h3 style="margin:0 0 8px 0;">You're in the book! ✅</h3>
-            <p class="muted" style="margin:0;">Welcome to the Distorted Realm. Hope to see you around!</p>
-          </div>
-        `;
-      } catch (err) {
-        console.error(err);
-        alert("Something went wrong. Please try again.");
-      }
-    });
-  }
-
-
 
   <script src="js/scripts.js"></script>
 </body>
