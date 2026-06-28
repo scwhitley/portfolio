@@ -1,4 +1,3 @@
-```javascript
 document.addEventListener("DOMContentLoaded", () => {
   // =========
   // Social links (Discord + Merch removed)
@@ -371,4 +370,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-```
