@@ -535,20 +535,21 @@ h1, h2, h3, h4,
   letter-spacing: 0.3px;
 }
 
-.affiliate-items{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 12px;
+.affiliate-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.affiliate-card{
-  display:flex;
-  gap: 12px;
-  align-items:center;
-  padding: 12px;
-  border-radius: 16px;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.03);
+.affiliate-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  width: 100%;
 }
 
 .affiliate-logo{
