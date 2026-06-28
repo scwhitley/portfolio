@@ -95,58 +95,106 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderStat();
 
-  // =========
-  // Merch carousel (with error fallback)
-  // =========
-  const merchItems = [
-    { title: "Logo Mug", img: "images/merch/coffee.png", url: "https://mr-distort-shop.fourthwall.com" },
-    { title: "Crewneck", img: "images/merch/crewneck.png", url: "https://mr-distort-shop.fourthwall.com" },
-    { title: "Cropped Hoodie", img: "images/merch/cropped.png", url: "https://mr-distort-shop.fourthwall.com" },
-    { title: "T-Shirt", img: "images/merch/shirt.png", url: "https://mr-distort-shop.fourthwall.com" },
-  ];
+ // =========
+// Upcoming Streams Schedule (Google Calendar iCal)
+// =========
+const ICAL_URL = "https://calendar.google.com/calendar/ical/mrdistort1%40gmail.com/public/basic.ics";
+const CORS_PROXY = "https://corsproxy.io/?";
+const scheduleList = document.getElementById("scheduleList");
 
-  let merchIndex = 0;
-  const merchStage = document.getElementById("merchStage");
-  const merchLeft = document.querySelector(".merch-left");
-  const merchRight = document.querySelector(".merch-right");
+async function loadSchedule() {
+  if (!scheduleList) return;
 
-  function renderMerch() {
-    if (!merchStage) return;
-    const item = merchItems[merchIndex];
+  try {
+    const res = await fetch(CORS_PROXY + encodeURIComponent(ICAL_URL));
+    if (!res.ok) throw new Error("Failed to fetch calendar");
+    const text = await res.text();
+    const events = parseIcal(text);
+    renderSchedule(events);
+  } catch (err) {
+    console.error(err);
+    scheduleList.innerHTML = `<div class="muted" style="padding:12px 0;">Could not load schedule. Check back soon!</div>`;
+  }
+}
 
-    merchStage.innerHTML = `
-      <a href="${item.url}" target="_blank" rel="noopener" style="text-decoration:none; width:100%;">
-        <img class="merch-image" src="${item.img}" alt="${item.title}">
-      </a>
-      <div class="merch-title">${item.title}</div>
-      <div class="muted">Tap image to view</div>
-    `;
+function parseIcal(text) {
+  const events = [];
+  const blocks = text.split("BEGIN:VEVENT");
+  blocks.shift(); // remove header
 
-    const imgEl = merchStage.querySelector("img");
-    if (imgEl) {
-      imgEl.onerror = () => {
-        console.warn("[Merch image failed to load]", item.img);
-        merchStage.innerHTML = `
-          <div class="merch-title">${item.title}</div>
-          <div class="muted">Image not found:</div>
-          <div class="muted" style="word-break:break-all;">${item.img}</div>
-          <div class="muted">Fix the filename/folder in your repo and refresh.</div>
-        `;
-      };
-    }
+  const now = new Date();
+  const startOfWeek = new Date(now);
+  startOfWeek.setHours(0, 0, 0, 0);
+  startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+  for (const block of blocks) {
+    const summary = (block.match(/SUMMARY:(.+)/)?.[1] || "Stream").trim();
+    const dtstart = block.match(/DTSTART(?:;[^:]+)?:(\d+T?\d+)/)?.[1];
+    if (!dtstart) continue;
+
+    const date = parseIcalDate(dtstart);
+    if (!date || date < startOfWeek || date >= endOfWeek) continue;
+
+    events.push({ summary, date });
   }
 
-  if (merchLeft) merchLeft.addEventListener("click", () => {
-    merchIndex = (merchIndex - 1 + merchItems.length) % merchItems.length;
-    renderMerch();
-  });
+  events.sort((a, b) => a.date - b.date);
+  return events;
+}
 
-  if (merchRight) merchRight.addEventListener("click", () => {
-    merchIndex = (merchIndex + 1) % merchItems.length;
-    renderMerch();
-  });
+function parseIcalDate(str) {
+  // Handle both YYYYMMDDTHHMMSSZ and YYYYMMDD formats
+  if (str.length >= 15) {
+    return new Date(
+      `${str.slice(0,4)}-${str.slice(4,6)}-${str.slice(6,8)}T${str.slice(9,11)}:${str.slice(11,13)}:${str.slice(13,15)}Z`
+    );
+  } else {
+    return new Date(`${str.slice(0,4)}-${str.slice(4,6)}-${str.slice(6,8)}`);
+  }
+}
 
-  renderMerch();
+function renderSchedule(events) {
+  if (!scheduleList) return;
+
+  if (events.length === 0) {
+    scheduleList.innerHTML = `<div class="muted" style="padding:12px 0;">No streams scheduled this week. Check back soon!</div>`;
+    return;
+  }
+
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  scheduleList.innerHTML = events.map(e => {
+    const d = e.date;
+    const day = days[d.getDay()];
+    const month = months[d.getMonth()];
+    const date = d.getDate();
+    const hours = d.getHours();
+    const mins = d.getMinutes().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const hour12 = ((hours % 12) || 12);
+    const timeStr = `${hour12}:${mins} ${ampm}`;
+
+    return `
+      <div class="schedule-item">
+        <div class="schedule-date">
+          <span class="schedule-day">${day}</span>
+          <span class="schedule-month-date">${month} ${date}</span>
+        </div>
+        <div class="schedule-info">
+          <div class="schedule-title">${e.summary}</div>
+          <div class="schedule-time muted">${timeStr} ET</div>
+        </div>
+        <i class="bi bi-broadcast icon-twitch" style="font-size:1.1rem;"></i>
+      </div>
+    `;
+  }).join("");
+}
+
+loadSchedule();
 
   // =========
   // Affiliate Modal
