@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   // =========
-  // Social links (Discord + Merch removed)
+  // Social links
   // =========
   const socials = [
     { name: "Twitch", url: "https://www.twitch.tv/mrdistort", icon: "bi-twitch", brand: "twitch" },
@@ -26,13 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const leftIcon = s.brand === "kick"
         ? `<span class="kick-badge" aria-hidden="true">K</span>`
         : `<i class="bi ${s.icon} ${brandIconClass(s.brand)}" aria-hidden="true"></i>`;
-
       return `
         <a href="${s.url}" target="_blank" rel="noopener">
-          <span class="left">
-            ${leftIcon}
-            <strong>${s.name}</strong>
-          </span>
+          <span class="left">${leftIcon}<strong>${s.name}</strong></span>
           <span class="right"><i class="bi bi-box-arrow-up-right"></i></span>
         </a>
       `;
@@ -40,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========
-  // Phase 1 Stats (manual)
+  // Stats Carousel
   // =========
   const platformStats = [
     { platform: "Twitch", brand: "twitch", value: "431", label: "Followers" },
@@ -68,16 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderStat() {
     if (!statsContent) return;
     const s = platformStats[statIndex];
-
     const iconHtml = s.brand === "kick"
       ? `<span class="kick-badge" aria-hidden="true">K</span>`
       : `<i class="bi ${platformBrandToBootstrapIcon(s.brand)} platform-icon ${brandIconClass(s.brand)}" aria-hidden="true"></i>`;
-
     statsContent.innerHTML = `
-      <div class="stat-platform">
-        ${iconHtml}
-        <span>${s.platform}</span>
-      </div>
+      <div class="stat-platform">${iconHtml}<span>${s.platform}</span></div>
       <div class="stat-number">${s.value}</div>
       <div class="stat-label">${s.label}</div>
     `;
@@ -87,116 +78,99 @@ document.addEventListener("DOMContentLoaded", () => {
     statIndex = (statIndex - 1 + platformStats.length) % platformStats.length;
     renderStat();
   });
-
   if (statsRight) statsRight.addEventListener("click", () => {
     statIndex = (statIndex + 1) % platformStats.length;
     renderStat();
   });
-
   renderStat();
 
- // =========
-// Upcoming Streams Schedule (Google Calendar iCal)
-// =========
-const ICAL_URL = "/.netlify/functions/calendar";
-const scheduleList = document.getElementById("scheduleList");
+  // =========
+  // Upcoming Streams Schedule (Google Calendar iCal via Netlify function)
+  // =========
+  const ICAL_URL = "/.netlify/functions/calendar";
+  const scheduleList = document.getElementById("scheduleList");
 
-async function loadSchedule() {
-  if (!scheduleList) return;
-
-  try {
-    const res = await fetch(ICAL_URL);
-    if (!res.ok) throw new Error("Failed to fetch calendar");
-    const text = await res.text();
-    const events = parseIcal(text);
-    renderSchedule(events);
-  } catch (err) {
-    console.error(err);
-    scheduleList.innerHTML = `<div class="muted" style="padding:12px 0;">Could not load schedule. Check back soon!</div>`;
-  }
-}
-
-function parseIcal(text) {
-  const events = [];
-  const blocks = text.split("BEGIN:VEVENT");
-  blocks.shift(); // remove header
-
-  const now = new Date();
-  const startOfWeek = new Date(now);
-  startOfWeek.setHours(0, 0, 0, 0);
-  startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
-
-  const endOfWeek = new Date(startOfWeek);
-  endOfWeek.setDate(startOfWeek.getDate() + 7);
-
-  for (const block of blocks) {
-    const summary = (block.match(/SUMMARY:(.+)/)?.[1] || "Stream").trim();
-    const dtstart = block.match(/DTSTART(?:;[^:]+)?:(\d+T?\d+)/)?.[1];
-    if (!dtstart) continue;
-
-    const date = parseIcalDate(dtstart);
-    if (!date || date < startOfWeek || date >= endOfWeek) continue;
-
-    events.push({ summary, date });
+  async function loadSchedule() {
+    if (!scheduleList) return;
+    try {
+      const res = await fetch(ICAL_URL);
+      if (!res.ok) throw new Error("Failed to fetch calendar");
+      const text = await res.text();
+      const events = parseIcal(text);
+      renderSchedule(events);
+    } catch (err) {
+      console.error(err);
+      scheduleList.innerHTML = `<div class="muted" style="padding:12px 0;">Could not load schedule. Check back soon!</div>`;
+    }
   }
 
-  events.sort((a, b) => a.date - b.date);
-  return events;
-}
+  function parseIcal(text) {
+    const events = [];
+    const blocks = text.split("BEGIN:VEVENT");
+    blocks.shift();
 
-function parseIcalDate(str) {
-  // Handle both YYYYMMDDTHHMMSSZ and YYYYMMDD formats
-  if (str.length >= 15) {
-    return new Date(
-      `${str.slice(0,4)}-${str.slice(4,6)}-${str.slice(6,8)}T${str.slice(9,11)}:${str.slice(11,13)}:${str.slice(13,15)}Z`
-    );
-  } else {
-    return new Date(`${str.slice(0,4)}-${str.slice(4,6)}-${str.slice(6,8)}`);
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    for (const block of blocks) {
+      const summary = (block.match(/SUMMARY:(.+)/)?.[1] || "Stream").trim();
+      const dtstart = block.match(/DTSTART(?:;[^:]+)?:(\d+T?\d+)/)?.[1];
+      if (!dtstart) continue;
+      const date = parseIcalDate(dtstart);
+      if (!date || date < startOfWeek || date >= endOfWeek) continue;
+      events.push({ summary, date });
+    }
+
+    events.sort((a, b) => a.date - b.date);
+    return events;
   }
-}
 
-function renderSchedule(events) {
-  if (!scheduleList) return;
-
-  if (events.length === 0) {
-    scheduleList.innerHTML = `<div class="muted" style="padding:12px 0;">No streams scheduled this week. Check back soon!</div>`;
-    return;
+  function parseIcalDate(str) {
+    if (str.length >= 15) {
+      return new Date(`${str.slice(0,4)}-${str.slice(4,6)}-${str.slice(6,8)}T${str.slice(9,11)}:${str.slice(11,13)}:${str.slice(13,15)}Z`);
+    } else {
+      return new Date(`${str.slice(0,4)}-${str.slice(4,6)}-${str.slice(6,8)}`);
+    }
   }
 
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-
-  scheduleList.innerHTML = events.map(e => {
-    const d = e.date;
-    const day = days[d.getDay()];
-    const month = months[d.getMonth()];
-    const date = d.getDate();
-    const hours = d.getHours();
-    const mins = d.getMinutes().toString().padStart(2, "0");
-    const ampm = hours >= 12 ? "PM" : "AM";
-    const hour12 = ((hours % 12) || 12);
-    const timeStr = `${hour12}:${mins} ${ampm}`;
-
-    return `
-      <div class="schedule-item">
-        <div class="schedule-date">
-          <span class="schedule-day">${day}</span>
-          <span class="schedule-month-date">${month} ${date}</span>
+  function renderSchedule(events) {
+    if (!scheduleList) return;
+    if (events.length === 0) {
+      scheduleList.innerHTML = `<div class="muted" style="padding:12px 0;">No streams scheduled this week. Check back soon!</div>`;
+      return;
+    }
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    scheduleList.innerHTML = events.map(e => {
+      const d = e.date;
+      const hours = d.getHours();
+      const mins = d.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const hour12 = ((hours % 12) || 12);
+      return `
+        <div class="schedule-item">
+          <div class="schedule-date">
+            <span class="schedule-day">${days[d.getDay()]}</span>
+            <span class="schedule-month-date">${months[d.getMonth()]} ${d.getDate()}</span>
+          </div>
+          <div class="schedule-info">
+            <div class="schedule-title">${e.summary}</div>
+            <div class="schedule-time muted">${hour12}:${mins} ${ampm} ET</div>
+          </div>
+          <i class="bi bi-broadcast icon-twitch" style="font-size:1.1rem;"></i>
         </div>
-        <div class="schedule-info">
-          <div class="schedule-title">${e.summary}</div>
-          <div class="schedule-time muted">${timeStr} ET</div>
-        </div>
-        <i class="bi bi-broadcast icon-twitch" style="font-size:1.1rem;"></i>
-      </div>
-    `;
-  }).join("");
-}
+      `;
+    }).join("");
+  }
 
-loadSchedule();
+  loadSchedule();
 
   // =========
-  // Affiliate Modal
+  // Affiliates
   // =========
   const affiliates = [
     {
@@ -219,8 +193,9 @@ loadSchedule();
           url: "https://razer.a9yw.net/c/6818512/642901/10229",
           logo: "images/affiliates/razer-team-logo.png",
           blurb: "Gaming peripherals"
-        },
-    
+        }
+      ]
+    },
     {
       category: "Energy",
       items: [
@@ -256,6 +231,24 @@ loadSchedule();
     }
   ];
 
+  // =========
+  // Modal helpers
+  // =========
+  function openModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.style.display = "block";
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.style.display = "none";
+    document.body.style.overflow = "";
+  }
+
+  // =========
+  // Affiliate Modal
+  // =========
   const affiliateModal = document.getElementById("affiliateModal");
   const affiliateBody = document.getElementById("affiliateModalBody");
   const openAffiliateModalBtn = document.getElementById("openAffiliateModal");
@@ -263,7 +256,6 @@ loadSchedule();
 
   function buildAffiliateModal() {
     if (!affiliateBody) return;
-
     affiliateBody.innerHTML = affiliates.map(cat => `
       <div class="affiliate-category">
         <h4>${cat.category}</h4>
@@ -285,33 +277,16 @@ loadSchedule();
     `).join("");
   }
 
-  // =========
-  // Modal helpers
-  // =========
-  function openModal(modalEl) {
-    if (!modalEl) return;
-    modalEl.style.display = "block";
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeModal(modalEl) {
-    if (!modalEl) return;
-    modalEl.style.display = "none";
-    document.body.style.overflow = "";
-  }
-
-  // Affiliate modal wiring
   if (openAffiliateModalBtn) {
     buildAffiliateModal();
     openAffiliateModalBtn.addEventListener("click", () => openModal(affiliateModal));
   }
-
   if (closeAffiliateModalBtn) {
     closeAffiliateModalBtn.addEventListener("click", () => closeModal(affiliateModal));
   }
 
   // =========
-  // Contact Modal (Netlify Forms)
+  // Contact Modal
   // =========
   const contactModal = document.getElementById("contactModal");
   const openContactModalBtn = document.getElementById("openContactModal");
@@ -322,32 +297,26 @@ loadSchedule();
     openContactModalBtn.style.cursor = "pointer";
     openContactModalBtn.addEventListener("click", () => openModal(contactModal));
   }
-
   if (closeContactModalBtn) {
     closeContactModalBtn.addEventListener("click", () => closeModal(contactModal));
   }
 
-  // Submit Contact Form to Netlify without leaving the page
   if (contactForm) {
     contactForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       try {
         const formData = new FormData(contactForm);
         const body = new URLSearchParams(formData).toString();
-
         const res = await fetch("/", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body
         });
-
         if (!res.ok) throw new Error(`Netlify submit failed: ${res.status}`);
-
         contactForm.innerHTML = `
           <div style="padding:12px 4px;">
             <h3 style="margin:0 0 8px 0;">Sent ✅</h3>
-            <p class="muted" style="margin:0;">Your message reached Mr. Distort. I’ll get back to you ASAP.</p>
+            <p class="muted" style="margin:0;">Your message reached Mr. Distort. I'll get back to you ASAP.</p>
           </div>
         `;
       } catch (err) {
@@ -358,7 +327,7 @@ loadSchedule();
   }
 
   // =========
-  // Guest Book Modal (Netlify Forms)
+  // Guest Book Modal
   // =========
   const guestBookModal = document.getElementById("guestBookModal");
   const openGuestBookModalBtn = document.getElementById("openGuestBookModal");
@@ -369,34 +338,26 @@ loadSchedule();
     openGuestBookModalBtn.style.cursor = "pointer";
     openGuestBookModalBtn.addEventListener("click", () => openModal(guestBookModal));
   }
-
   if (closeGuestBookModalBtn) {
     closeGuestBookModalBtn.addEventListener("click", () => closeModal(guestBookModal));
   }
 
-  // Submit Guest Book Form to Netlify without leaving the page
   if (guestBookForm) {
     guestBookForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       try {
         const formData = new FormData(guestBookForm);
         const body = new URLSearchParams(formData).toString();
-
         const res = await fetch("/", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body
         });
-
         if (!res.ok) throw new Error(`Netlify submit failed: ${res.status}`);
-
         guestBookForm.innerHTML = `
           <div style="padding:12px 4px;">
             <h3 style="margin:0 0 8px 0;">Welcome to the Distorted Realm! ✅</h3>
-            <p class="muted" style="margin:0;">
-              Thanks for signing the Guest Book. Hope to see you around the community!
-            </p>
+            <p class="muted" style="margin:0;">Thanks for signing the Guest Book. Hope to see you around the community!</p>
           </div>
         `;
       } catch (err) {
@@ -432,12 +393,10 @@ loadSchedule();
     subIndex = (subIndex - 1 + subathonImages.length) % subathonImages.length;
     renderSubathon();
   });
-
   if (subRight) subRight.addEventListener("click", () => {
     subIndex = (subIndex + 1) % subathonImages.length;
     renderSubathon();
   });
-
   subDots.forEach(dot => {
     dot.addEventListener("click", () => {
       subIndex = parseInt(dot.dataset.index);
@@ -452,26 +411,20 @@ loadSchedule();
       openModal(subathonModal);
     });
   }
-
   if (closeSubathonModalBtn) {
     closeSubathonModalBtn.addEventListener("click", () => closeModal(subathonModal));
   }
 
+  // =========
+  // Close modals on outside click or ESC
+  // =========
   window.addEventListener("click", (e) => {
+    if (e.target === affiliateModal) closeModal(affiliateModal);
+    if (e.target === contactModal) closeModal(contactModal);
+    if (e.target === guestBookModal) closeModal(guestBookModal);
     if (e.target === subathonModal) closeModal(subathonModal);
   });
 
-  // Close modals when clicking outside
- window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      closeModal(affiliateModal);
-      closeModal(contactModal);
-      closeModal(guestBookModal);
-      closeModal(subathonModal);
-    }
-  });
-
-  // ESC closes modals
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeModal(affiliateModal);
