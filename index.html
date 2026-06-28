@@ -39,22 +39,6 @@
             <div class="brand-name">MR. DISTORT</div>
           </div>
         </div>
-
-        <!-- RIGHT SIDE (Spotify Player) -->
-        <div class="spotify-header">
-          <iframe 
-            data-testid="embed-iframe" 
-            style="border-radius:12px" 
-            src="https://open.spotify.com/embed/playlist/1coykh9bvb2JKkkXXRzjWU?utm_source=generator" 
-            width="100%" 
-            height="100" 
-            frameBorder="0" 
-            allowfullscreen="" 
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-            loading="lazy">
-          </iframe>
-        </div>
-
       </div>
     </div>
   </div>
@@ -84,6 +68,9 @@
          <a class="chip" href="https://mr-distort-shop.fourthwall.com" target="_blank" rel="noopener">
             <i class="bi bi-shop"></i> Visit the Merch Store
           </a>
+          <button class="chip" id="openSubathonModal">
+            <i class="bi bi-bullseye"></i> 24hr Subathon Info
+          </button>
         </div>
       </div>
     </div>
@@ -210,6 +197,33 @@
       </form>
     </div>
   </div>
+
+  <!-- Subathon Modal -->
+<div id="subathonModal" class="modal">
+  <div class="modal-content modal-content-img">
+    <span class="close" id="closeSubathonModal">&times;</span>
+    <h3 class="modal-title">24hr Subathon Info</h3>
+
+    <div class="subathon-carousel">
+      <button class="arrow sub-left" aria-label="Previous">
+        <i class="bi bi-arrow-left-circle"></i>
+      </button>
+
+      <div class="subathon-stage">
+        <img id="subathonImg" src="images/subathon1.png" alt="Subathon Info" />
+      </div>
+
+      <button class="arrow sub-right" aria-label="Next">
+        <i class="bi bi-arrow-right-circle"></i>
+      </button>
+    </div>
+
+    <div class="subathon-dots">
+      <span class="sub-dot active" data-index="0"></span>
+      <span class="sub-dot" data-index="1"></span>
+    </div>
+  </div>
+</div>
 
 
 
