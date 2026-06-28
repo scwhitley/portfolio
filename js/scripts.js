@@ -98,15 +98,14 @@ document.addEventListener("DOMContentLoaded", () => {
  // =========
 // Upcoming Streams Schedule (Google Calendar iCal)
 // =========
-const ICAL_URL = "https://calendar.google.com/calendar/ical/mrdistort1%40gmail.com/public/basic.ics";
-const CORS_PROXY = "https://corsproxy.io/?url=";
+const ICAL_URL = "/.netlify/functions/calendar";
 const scheduleList = document.getElementById("scheduleList");
 
 async function loadSchedule() {
   if (!scheduleList) return;
 
   try {
-    const res = await fetch(CORS_PROXY + encodeURIComponent(ICAL_URL));
+    const res = await fetch(ICAL_URL);
     if (!res.ok) throw new Error("Failed to fetch calendar");
     const text = await res.text();
     const events = parseIcal(text);
