@@ -39,11 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Stats Carousel
   // =========
   const platformStats = [
-    { platform: "Twitch", brand: "twitch", value: "431", label: "Followers" },
-    { platform: "Kick", brand: "kick", value: "24", label: "Followers" },
+    { platform: "Twitch", brand: "twitch", value: "449", label: "Followers" },
+    { platform: "Kick", brand: "kick", value: "26", label: "Followers" },
     { platform: "TikTok", brand: "tiktok", value: "221", label: "Followers" },
-    { platform: "Instagram", brand: "instagram", value: "148", label: "Followers" },
-    { platform: "YouTube", brand: "youtube", value: "461", label: "Subscribers" },
+    { platform: "Instagram", brand: "instagram", value: "151", label: "Followers" },
+    { platform: "YouTube", brand: "youtube", value: "460", label: "Subscribers" },
   ];
 
   let statIndex = 0;
@@ -378,8 +378,8 @@ await fetch(SCRIPT_URL + "?" + params.toString(), {
 
         guestBookForm.innerHTML = `
           <div style="padding:12px 4px; text-align:center;">
-            <h3 style="margin:0 0 8px 0;">You're in the book! ✅</h3>
-            <p class="muted" style="margin:0;">Welcome to the Distorted Realm. Hope to see you around!</p>
+            <h3 style="margin:0 0 8px 0;">You're locked in! ✅</h3>
+            <p class="muted" style="margin:0;">Great to meet you! Be on the lookout on the Giveway Results!</p>
           </div>
         `;
       } catch (err) {
