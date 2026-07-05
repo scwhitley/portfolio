@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           name: "Neosabers",
           url: "https://neosabers.com/?ref=MRDISTORT",
-          logo: "images/affiliates/neosabers.png",
+          logo: "images/affiliates/neosaber.png",
           blurb: "Replica lightsabers"
         }
       ]
