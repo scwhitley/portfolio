@@ -342,11 +342,13 @@ document.addEventListener("DOMContentLoaded", () => {
     closeGuestBookModalBtn.addEventListener("click", () => closeModal(guestBookModal));
   }
 
- if (guestBookForm) {
-    guestBookForm.addEventListener("submit", async (e) => {
+ const consultForm = document.getElementById("consultForm");
+
+  if (consultForm) {
+    consultForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const services = [...guestBookForm.querySelectorAll('input[name="roles"]:checked')]
+      const services = [...consultForm.querySelectorAll('input[name="services"]:checked')]
         .map(cb => cb.value);
 
       if (services.length === 0) {
@@ -355,11 +357,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const payload = {
-        name: guestBookForm.querySelector('[name="name"]').value,
-        socialName: guestBookForm.querySelector('[name="socialName"]').value,
-        whereMet: guestBookForm.querySelector('[name="discord"]').value,
-        roles: services.join(", "),
-        giveaway: guestBookForm.querySelector('[name="vision"]').value,
+        name: consultForm.querySelector('[name="name"]').value,
+        socialName: consultForm.querySelector('[name="socialName"]').value,
+        discordName: consultForm.querySelector('[name="discordName"]').value,
+        services: services.join(", "),
+        vision: consultForm.querySelector('[name="vision"]').value,
       };
 
       try {
@@ -367,16 +369,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams();
         params.append("name", payload.name);
         params.append("socialName", payload.socialName);
-        params.append("whereMet", payload.whereMet);
-        params.append("roles", payload.roles);
-        params.append("giveaway", payload.giveaway);
+        params.append("discordName", payload.discordName);
+        params.append("services", payload.services);
+        params.append("vision", payload.vision);
 
         await fetch(SCRIPT_URL + "?" + params.toString(), {
           method: "GET",
           mode: "no-cors"
         });
 
-        guestBookForm.innerHTML = `
+        consultForm.innerHTML = `
           <div style="padding:12px 4px; text-align:center;">
             <h3 style="margin:0 0 8px 0;">Request Received! ✅</h3>
             <p class="muted" style="margin:0;">I'll reach out via Discord DM shortly. Looking forward to working with you!</p>
