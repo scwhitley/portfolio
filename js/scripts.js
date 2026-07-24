@@ -39,11 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Stats Carousel
   // =========
   const platformStats = [
-    { platform: "Twitch", brand: "twitch", value: "449", label: "Followers" },
+    { platform: "Twitch", brand: "twitch", value: "462", label: "Followers" },
     { platform: "Kick", brand: "kick", value: "26", label: "Followers" },
-    { platform: "TikTok", brand: "tiktok", value: "221", label: "Followers" },
-    { platform: "Instagram", brand: "instagram", value: "151", label: "Followers" },
-    { platform: "YouTube", brand: "youtube", value: "460", label: "Subscribers" },
+    { platform: "TikTok", brand: "tiktok", value: "226", label: "Followers" },
+    { platform: "Instagram", brand: "instagram", value: "199", label: "Followers" },
+    { platform: "YouTube", brand: "youtube", value: "468", label: "Subscribers" },
   ];
 
   let statIndex = 0;
