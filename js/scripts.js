@@ -346,40 +346,40 @@ document.addEventListener("DOMContentLoaded", () => {
     guestBookForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const roles = [...guestBookForm.querySelectorAll('input[name="roles"]:checked')]
+      const services = [...guestBookForm.querySelectorAll('input[name="roles"]:checked')]
         .map(cb => cb.value);
 
-      if (roles.length === 0) {
-        alert("Please select at least one role (Streamer, Gamer, etc.)");
+      if (services.length === 0) {
+        alert("Please select at least one service.");
         return;
       }
 
       const payload = {
         name: guestBookForm.querySelector('[name="name"]').value,
         socialName: guestBookForm.querySelector('[name="socialName"]').value,
-        whereMet: guestBookForm.querySelector('[name="whereMet"]').value,
-        roles: roles.join(", "),
-        giveaway: guestBookForm.querySelector('[name="giveaway"]').checked ? "Yes" : "No",
+        whereMet: guestBookForm.querySelector('[name="discord"]').value,
+        roles: services.join(", "),
+        giveaway: guestBookForm.querySelector('[name="vision"]').value,
       };
 
       try {
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzs4xkctSMSsK2ttM_tPRfFGWphfqWW667vmzOd8zdUwRZzXnidf3MyrHmyHKfiPXc-wQ/exec";
         const params = new URLSearchParams();
-          params.append("name", payload.name);
-          params.append("socialName", payload.socialName);
-          params.append("whereMet", payload.whereMet);
-          params.append("roles", payload.roles);
-          params.append("giveaway", payload.giveaway);
+        params.append("name", payload.name);
+        params.append("socialName", payload.socialName);
+        params.append("whereMet", payload.whereMet);
+        params.append("roles", payload.roles);
+        params.append("giveaway", payload.giveaway);
 
-await fetch(SCRIPT_URL + "?" + params.toString(), {
-  method: "GET",
-  mode: "no-cors"
-});
+        await fetch(SCRIPT_URL + "?" + params.toString(), {
+          method: "GET",
+          mode: "no-cors"
+        });
 
         guestBookForm.innerHTML = `
           <div style="padding:12px 4px; text-align:center;">
-            <h3 style="margin:0 0 8px 0;">You're locked in! ✅</h3>
-            <p class="muted" style="margin:0;">Great to meet you! Be on the lookout on the Giveway Results!</p>
+            <h3 style="margin:0 0 8px 0;">Request Received! ✅</h3>
+            <p class="muted" style="margin:0;">I'll reach out via Discord DM shortly. Looking forward to working with you!</p>
           </div>
         `;
       } catch (err) {
