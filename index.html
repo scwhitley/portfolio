@@ -79,8 +79,8 @@
         <div id="socialLinks" class="social-links"></div>
 <div style="margin-top: 12px;">
   <button class="btn primary full" id="openGuestBookModal">
-    <i class="bi bi-book"></i> DreamCon Guestbook
-  </button>
+  <i class="bi bi-laptop"></i> Book Free Consultation
+</button>
 </div>
       </div>
     </div>
@@ -205,12 +205,13 @@
   </div>
 </div>
 
-    <!-- DreamCon Guestbook Modal -->
+    <!-- Consultation Modal -->
+<!-- Consultation Modal -->
 <div id="guestBookModal" class="modal">
   <div class="modal-content">
     <span class="close" id="closeGuestBookModal">&times;</span>
-    <h3 class="modal-title">DreamCon Guestbook</h3>
-    <p class="modal-sub" id="guestbookMessage">Welcome to DreamCon! Sign the guestbook below.</p>
+    <h3 class="modal-title">Distorted Services Consultation</h3>
+    <p class="modal-sub">Thank you for reaching out! Please fill out this form and submit. Once received, I will reach out via Discord DM for communication. Thanks again and I look forward to working with you.</p>
 
     <form id="guestBookForm" class="contact-form">
 
@@ -220,42 +221,37 @@
       </label>
 
       <label>
-        Social Handle
+        Twitch / Social Handle
         <input name="socialName" type="text" placeholder="@yoursocial" required />
       </label>
 
       <label>
-        Where did you meet Mr. Distort?
-        <input name="whereMet" type="text" placeholder="e.g. Artist Alley, Panel Room..." required />
+        Discord Username
+        <input name="discord" type="text" placeholder="yourname#0000" required />
       </label>
 
-      <label>I am a... <span style="font-size:0.75rem; color:#888;">(select at least one)</span></label>
+      <label>Services Requesting <span style="font-size:0.75rem; color:#888;">(select at least one)</span></label>
       <div class="checkbox-group">
         <label class="checkbox-item">
-          <input type="checkbox" name="roles" value="Streamer" /> Streamer
+          <input type="checkbox" name="roles" value="Stinger Transition" /> Stinger Transition
         </label>
         <label class="checkbox-item">
-          <input type="checkbox" name="roles" value="Content Creator" /> Content Creator
+          <input type="checkbox" name="roles" value="Basic Command Package" /> Basic Command Package
         </label>
         <label class="checkbox-item">
-          <input type="checkbox" name="roles" value="Gamer" /> Gamer
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="roles" value="Supporter" /> Supporter
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="roles" value="Cosplayer" /> Cosplayer
+          <input type="checkbox" name="roles" value="Custom Script Package" /> Custom Script Package
         </label>
       </div>
 
-      <label class="checkbox-item giveaway-check">
-        <input type="checkbox" name="giveaway" value="yes" />
-        <span>Enter me in the <strong>DreamCon Giveaway</strong> 🎉</span>
+      <label>
+        Brief Description of your Vision
+        <textarea name="vision" rows="4" placeholder="Describe what you're looking for..." required></textarea>
       </label>
 
       <button class="btn primary full" type="submit">
-        <i class="bi bi-pen"></i> Submit
+        <i class="bi bi-send"></i> Submit Request
       </button>
+
     </form>
   </div>
 </div>
