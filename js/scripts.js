@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   // =========
-  // Social links
+  // Data
   // =========
   const socials = [
     { name: "Twitch", url: "https://www.twitch.tv/mrdistort", icon: "bi-twitch", brand: "twitch" },
@@ -8,6 +8,43 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "TikTok", url: "https://www.tiktok.com/@mr_distort", icon: "bi-tiktok", brand: "tiktok" },
     { name: "Instagram", url: "https://www.instagram.com/mr_distort", icon: "bi-instagram", brand: "instagram" },
     { name: "YouTube", url: "https://www.youtube.com/@Mr_Distort", icon: "bi-youtube", brand: "youtube" },
+  ];
+
+  const platformStats = [
+    { platform: "Twitch", brand: "twitch", value: "462", label: "Followers" },
+    { platform: "Kick", brand: "kick", value: "26", label: "Followers" },
+    { platform: "TikTok", brand: "tiktok", value: "226", label: "Followers" },
+    { platform: "Instagram", brand: "instagram", value: "199", label: "Followers" },
+    { platform: "YouTube", brand: "youtube", value: "468", label: "Subscribers" },
+  ];
+
+  const affiliates = [
+    {
+      category: "Streaming Gear",
+      items: [
+        { name: "OBSBOT", url: "https://www.obsbot.com/?rfsn=8969544.bff71d&utm_source=refersion&utm_medium=affiliate&utm_campaign=8969544.bff71d", logo: "images/affiliates/obsbot.png", blurb: "Cameras + creator gear" },
+        { name: "Keychron", url: "https://www.keychron.com/?ref=MRDISTORT", logo: "images/affiliates/keychron.jpeg", blurb: "Keyboards" },
+        { name: "Razer", url: "https://razer.a9yw.net/c/6818512/642901/10229", logo: "images/affiliates/razer-team-logo.png", blurb: "Gaming peripherals" }
+      ]
+    },
+    {
+      category: "Energy",
+      items: [
+        { name: "Dubby Energy", url: "https://www.dubby.gg/discount/MRDISTORT?ref=rxvggddk", logo: "images/affiliates/dubby.png", blurb: "Energy drink" }
+      ]
+    },
+    {
+      category: "Tech / Lifestyle",
+      items: [
+        { name: "HidrateSpark", url: "https://hidratespark.com/stephen35", logo: "images/affiliates/hidrate.png", blurb: "Smart water bottle" }
+      ]
+    },
+    {
+      category: "Collectibles",
+      items: [
+        { name: "Neosabers", url: "https://neosabers.com/?ref=MRDISTORT", logo: "images/affiliates/neosaber.png", blurb: "Replica lightsabers" }
+      ]
+    }
   ];
 
   function brandIconClass(brand) {
@@ -20,8 +57,57 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const socialLinks = document.getElementById("socialLinks");
-  if (socialLinks) {
+  function platformBrandToBootstrapIcon(brand) {
+    switch (brand) {
+      case "twitch": return "bi-twitch";
+      case "tiktok": return "bi-tiktok";
+      case "instagram": return "bi-instagram";
+      case "youtube": return "bi-youtube";
+      default: return "bi-globe";
+    }
+  }
+
+  // =========
+  // Modal helpers
+  // =========
+  function openModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.style.display = "block";
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.style.display = "none";
+    document.body.style.overflow = "";
+  }
+
+  function wireModal(openBtnId, closeBtnId, modalId, onOpen) {
+    const modal = document.getElementById(modalId);
+    const openBtn = document.getElementById(openBtnId);
+    const closeBtn = document.getElementById(closeBtnId);
+
+    if (openBtn) {
+      openBtn.style.cursor = "pointer";
+      openBtn.addEventListener("click", () => {
+        if (onOpen) onOpen();
+        openModal(modal);
+      });
+    }
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => closeModal(modal));
+    }
+    return modal;
+  }
+
+  const allModals = [];
+
+  // =========
+  // Socials panel + modal
+  // =========
+  function renderSocialLinks() {
+    const socialLinks = document.getElementById("socialLinks");
+    if (!socialLinks) return;
     socialLinks.innerHTML = socials.map(s => {
       const leftIcon = s.brand === "kick"
         ? `<span class="kick-badge" aria-hidden="true">K</span>`
@@ -34,32 +120,24 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     }).join("");
   }
+  renderSocialLinks();
+  allModals.push(wireModal("openSocialsModal", "closeSocialsModal", "socialsModal"));
 
   // =========
-  // Stats Carousel
+  // Stats panel (glance) + modal (carousel)
   // =========
-  const platformStats = [
-    { platform: "Twitch", brand: "twitch", value: "462", label: "Followers" },
-    { platform: "Kick", brand: "kick", value: "26", label: "Followers" },
-    { platform: "TikTok", brand: "tiktok", value: "226", label: "Followers" },
-    { platform: "Instagram", brand: "instagram", value: "199", label: "Followers" },
-    { platform: "YouTube", brand: "youtube", value: "468", label: "Subscribers" },
-  ];
+  const glanceNumber = document.getElementById("glanceStatNumber");
+  const glanceCaption = document.getElementById("glanceStatCaption");
+  if (glanceNumber && glanceCaption) {
+    const s = platformStats[0];
+    glanceNumber.textContent = s.value;
+    glanceCaption.textContent = `${s.platform} ${s.label}`;
+  }
 
   let statIndex = 0;
   const statsContent = document.querySelector(".stats-content");
   const statsLeft = document.querySelector(".stats-left");
   const statsRight = document.querySelector(".stats-right");
-
-  function platformBrandToBootstrapIcon(brand) {
-    switch (brand) {
-      case "twitch": return "bi-twitch";
-      case "tiktok": return "bi-tiktok";
-      case "instagram": return "bi-instagram";
-      case "youtube": return "bi-youtube";
-      default: return "bi-globe";
-    }
-  }
 
   function renderStat() {
     if (!statsContent) return;
@@ -70,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     statsContent.innerHTML = `
       <div class="stat-platform">${iconHtml}<span>${s.platform}</span></div>
       <div class="stat-number">${s.value}</div>
-      <div class="stat-label">${s.label}</div>
+      <div class="stat-label muted">${s.label}</div>
     `;
   }
 
@@ -83,6 +161,13 @@ document.addEventListener("DOMContentLoaded", () => {
     renderStat();
   });
   renderStat();
+
+  allModals.push(wireModal("openStatsModal", "closeStatsModal", "statsModal"));
+
+  // =========
+  // Bio modal
+  // =========
+  allModals.push(wireModal("openBioModal", "closeBioModal", "bioModal"));
 
   // =========
   // Upcoming Streams Schedule (Google Calendar iCal via Netlify function)
@@ -100,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderSchedule(events);
     } catch (err) {
       console.error(err);
-      scheduleList.innerHTML = `<div class="muted" style="padding:12px 0;">Could not load schedule. Check back soon!</div>`;
+      scheduleList.innerHTML = `<div class="muted">Could not load schedule. Check back soon!</div>`;
     }
   }
 
@@ -140,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderSchedule(events) {
     if (!scheduleList) return;
     if (events.length === 0) {
-      scheduleList.innerHTML = `<div class="muted" style="padding:12px 0;">No streams scheduled this week. Check back soon!</div>`;
+      scheduleList.innerHTML = `<div class="muted">No streams scheduled this week. Check back soon!</div>`;
       return;
     }
     const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -170,89 +255,9 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSchedule();
 
   // =========
-  // Affiliates
+  // Affiliate modal
   // =========
-  const affiliates = [
-    {
-      category: "Streaming Gear",
-      items: [
-        {
-          name: "OBSBOT",
-          url: "https://www.obsbot.com/?rfsn=8969544.bff71d&utm_source=refersion&utm_medium=affiliate&utm_campaign=8969544.bff71d",
-          logo: "images/affiliates/obsbot.png",
-          blurb: "Cameras + creator gear"
-        },
-        {
-          name: "Keychron",
-          url: "https://www.keychron.com/?ref=MRDISTORT",
-          logo: "images/affiliates/keychron.jpeg",
-          blurb: "Keyboards"
-        },
-        {
-          name: "Razer",
-          url: "https://razer.a9yw.net/c/6818512/642901/10229",
-          logo: "images/affiliates/razer-team-logo.png",
-          blurb: "Gaming peripherals"
-        }
-      ]
-    },
-    {
-      category: "Energy",
-      items: [
-        {
-          name: "Dubby Energy",
-          url: "https://www.dubby.gg/discount/MRDISTORT?ref=rxvggddk",
-          logo: "images/affiliates/dubby.png",
-          blurb: "Energy drink"
-        }
-      ]
-    },
-    {
-      category: "Tech / Lifestyle",
-      items: [
-        {
-          name: "HidrateSpark",
-          url: "https://hidratespark.com/stephen35",
-          logo: "images/affiliates/hidrate.png",
-          blurb: "Smart water bottle"
-        }
-      ]
-    },
-    {
-      category: "Collectibles",
-      items: [
-        {
-          name: "Neosabers",
-          url: "https://neosabers.com/?ref=MRDISTORT",
-          logo: "images/affiliates/neosaber.png",
-          blurb: "Replica lightsabers"
-        }
-      ]
-    }
-  ];
-
-  // =========
-  // Modal helpers
-  // =========
-  function openModal(modalEl) {
-    if (!modalEl) return;
-    modalEl.style.display = "block";
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeModal(modalEl) {
-    if (!modalEl) return;
-    modalEl.style.display = "none";
-    document.body.style.overflow = "";
-  }
-
-  // =========
-  // Affiliate Modal
-  // =========
-  const affiliateModal = document.getElementById("affiliateModal");
   const affiliateBody = document.getElementById("affiliateModalBody");
-  const openAffiliateModalBtn = document.getElementById("openAffiliateModal");
-  const closeAffiliateModalBtn = document.getElementById("closeAffiliateModal");
 
   function buildAffiliateModal() {
     if (!affiliateBody) return;
@@ -267,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="affiliate-name">${item.name}</div>
                 <div class="affiliate-blurb">${item.blurb || ""}</div>
               </div>
-              <a class="btn ghost" href="${item.url}" target="_blank" rel="noopener">
+              <a class="btn btn-dark" href="${item.url}" target="_blank" rel="noopener">
                 Shop <i class="bi bi-box-arrow-up-right"></i>
               </a>
             </div>
@@ -276,31 +281,16 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `).join("");
   }
-
-  if (openAffiliateModalBtn) {
-    buildAffiliateModal();
-    openAffiliateModalBtn.addEventListener("click", () => openModal(affiliateModal));
-  }
-  if (closeAffiliateModalBtn) {
-    closeAffiliateModalBtn.addEventListener("click", () => closeModal(affiliateModal));
-  }
+  buildAffiliateModal();
+  allModals.push(wireModal("openAffiliateModal", "closeAffiliateModal", "affiliateModal"));
 
   // =========
-  // Contact Modal
+  // Contact modal + form
   // =========
-  const contactModal = document.getElementById("contactModal");
-  const openContactModalBtn = document.getElementById("openContactModal");
-  const closeContactModalBtn = document.getElementById("closeContactModal");
+  const contactModal = wireModal("openContactModal", "closeContactModal", "contactModal");
+  allModals.push(contactModal);
+
   const contactForm = document.getElementById("contactForm");
-
-  if (openContactModalBtn) {
-    openContactModalBtn.style.cursor = "pointer";
-    openContactModalBtn.addEventListener("click", () => openModal(contactModal));
-  }
-  if (closeContactModalBtn) {
-    closeContactModalBtn.addEventListener("click", () => closeModal(contactModal));
-  }
-
   if (contactForm) {
     contactForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -312,10 +302,10 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body
         });
-        if (!res.ok) throw new Error(`Netlify submit failed: ${res.status}`);
+        if (!res.ok) throw new Error(`Form submit failed: ${res.status}`);
         contactForm.innerHTML = `
           <div style="padding:12px 4px;">
-            <h3 style="margin:0 0 8px 0;">Sent ✅</h3>
+            <h3 style="margin:0 0 8px 0;">Sent</h3>
             <p class="muted" style="margin:0;">Your message reached Mr. Distort. I'll get back to you ASAP.</p>
           </div>
         `;
@@ -327,23 +317,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========
-  // Guest Book Modal
+  // Consultation modal + form
   // =========
-  const guestBookModal = document.getElementById("guestBookModal");
-  const openGuestBookModalBtn = document.getElementById("openGuestBookModal");
-  const closeGuestBookModalBtn = document.getElementById("closeGuestBookModal");
-  const guestBookForm = document.getElementById("guestBookForm");
+  allModals.push(wireModal("openGuestBookModal", "closeGuestBookModal", "guestBookModal"));
 
-  if (openGuestBookModalBtn) {
-    openGuestBookModalBtn.style.cursor = "pointer";
-    openGuestBookModalBtn.addEventListener("click", () => openModal(guestBookModal));
-  }
-  if (closeGuestBookModalBtn) {
-    closeGuestBookModalBtn.addEventListener("click", () => closeModal(guestBookModal));
-  }
-
- const consultForm = document.getElementById("consultForm");
-
+  const consultForm = document.getElementById("consultForm");
   if (consultForm) {
     consultForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -380,7 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         consultForm.innerHTML = `
           <div style="padding:12px 4px; text-align:center;">
-            <h3 style="margin:0 0 8px 0;">Request Received! ✅</h3>
+            <h3 style="margin:0 0 8px 0;">Request Received</h3>
             <p class="muted" style="margin:0;">I'll reach out via Discord DM shortly. Looking forward to working with you!</p>
           </div>
         `;
@@ -392,69 +370,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========
-  // Subathon Modal
-  // =========
-  const subathonImages = [
-    "images/subathon1.png",
-    "images/subathon2.png"
-  ];
-
-  let subIndex = 0;
-  const subathonModal = document.getElementById("subathonModal");
-  const openSubathonModalBtn = document.getElementById("openSubathonModal");
-  const closeSubathonModalBtn = document.getElementById("closeSubathonModal");
-  const subathonImg = document.getElementById("subathonImg");
-  const subDots = document.querySelectorAll(".sub-dot");
-  const subLeft = document.querySelector(".sub-left");
-  const subRight = document.querySelector(".sub-right");
-
-  function renderSubathon() {
-    if (subathonImg) subathonImg.src = subathonImages[subIndex];
-    subDots.forEach((d, i) => d.classList.toggle("active", i === subIndex));
-  }
-
-  if (subLeft) subLeft.addEventListener("click", () => {
-    subIndex = (subIndex - 1 + subathonImages.length) % subathonImages.length;
-    renderSubathon();
-  });
-  if (subRight) subRight.addEventListener("click", () => {
-    subIndex = (subIndex + 1) % subathonImages.length;
-    renderSubathon();
-  });
-  subDots.forEach(dot => {
-    dot.addEventListener("click", () => {
-      subIndex = parseInt(dot.dataset.index);
-      renderSubathon();
-    });
-  });
-
-  if (openSubathonModalBtn) {
-    openSubathonModalBtn.addEventListener("click", () => {
-      subIndex = 0;
-      renderSubathon();
-      openModal(subathonModal);
-    });
-  }
-  if (closeSubathonModalBtn) {
-    closeSubathonModalBtn.addEventListener("click", () => closeModal(subathonModal));
-  }
-
-  // =========
   // Close modals on outside click or ESC
   // =========
   window.addEventListener("click", (e) => {
-    if (e.target === affiliateModal) closeModal(affiliateModal);
-    if (e.target === contactModal) closeModal(contactModal);
-    if (e.target === guestBookModal) closeModal(guestBookModal);
-    if (e.target === subathonModal) closeModal(subathonModal);
+    allModals.forEach(m => { if (e.target === m) closeModal(m); });
   });
 
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      closeModal(affiliateModal);
-      closeModal(contactModal);
-      closeModal(guestBookModal);
-      closeModal(subathonModal);
+      allModals.forEach(m => closeModal(m));
     }
   });
 });
