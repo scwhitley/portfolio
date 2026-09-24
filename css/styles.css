@@ -220,6 +220,33 @@ img{ max-width: 100%; display: block; }
 }
 .cta-row{ display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
 
+.hero-status{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.hero-status .status-dot{ background: var(--muted); }
+.hero-status .status-dot.is-live{
+  background: var(--magenta);
+  animation: status-pulse 1.6s ease-in-out infinite;
+}
+.hero-status a{ color: var(--burnt-deep); text-decoration: underline; }
+@keyframes status-pulse{
+  0%, 100%{ opacity: 1; }
+  50%{ opacity: 0.35; }
+}
+@media (prefers-reduced-motion: reduce){
+  .hero-status .status-dot.is-live{ animation: none; }
+}
+
 /* =========================================================
    PLATFORM STRIP
    ========================================================= */
