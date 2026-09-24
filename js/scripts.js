@@ -128,4 +128,321 @@ document.addEventListener("DOMContentLoaded", () => {
     const counters = statsGrid.querySelectorAll(".stat-number");
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting &&
+        if (entry.isIntersecting && entry.target.dataset.counted === "false") {
+          entry.target.dataset.counted = "true";
+          animateCount(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(c => observer.observe(c));
+  }
+
+  function animateCount(el) {
+    const target = parseInt(el.dataset.target, 10);
+    const duration = 900;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target).toLocaleString();
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toLocaleString();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // =========
+  // Creator programs
+  // =========
+  const programsGrid = document.getElementById("programsGrid");
+  if (programsGrid) {
+    programsGrid.innerHTML = creatorPrograms.map(p => {
+      const visual = p.logo
+        ? `<div class="program-logo-wrap"><img src="${p.logo}" alt="${p.name} logo"></div>`
+        : `<div class="program-logo-wrap"><div class="program-badge-icon" style="${p.brk ? `--brk:${p.brk};` : ''}">${p.initials}</div></div>`;
+      return `
+        <div class="corner-panel program-card" ${p.brk ? `style="--brk:${p.brk};"` : ''}>
+          ${visual}
+          <div class="program-name">${p.name}</div>
+          <p class="program-blurb">${p.blurb}</p>
+          <a class="btn-tech btn-tech-accent" href="${p.url}" target="_blank" rel="noopener">View Program →</a>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // =========
+  // Modal helpers
+  // =========
+  function openModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.style.display = "block";
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.style.display = "none";
+    document.body.style.overflow = "";
+  }
+  function wireOpen(triggerId, modalEl) {
+    const trigger = document.getElementById(triggerId);
+    if (trigger) trigger.addEventListener("click", () => openModal(modalEl));
+  }
+
+  const allModals = [];
+
+  // Affiliate modal
+  const affiliateModal = document.getElementById("affiliateModal");
+  allModals.push(affiliateModal);
+  wireOpen("openAffiliateModal", affiliateModal);
+  const closeAffiliate = document.getElementById("closeAffiliateModal");
+  if (closeAffiliate) closeAffiliate.addEventListener("click", () => closeModal(affiliateModal));
+
+  const affiliateBody = document.getElementById("affiliateModalBody");
+  if (affiliateBody) {
+    affiliateBody.innerHTML = otherAffiliates.map(cat => `
+      <div class="affiliate-category">
+        <h4>${cat.category}</h4>
+        <div class="affiliate-items">
+          ${cat.items.map(item => `
+            <div class="affiliate-card">
+              <img class="affiliate-logo" src="${item.logo}" alt="${item.name} logo">
+              <div class="affiliate-meta">
+                <div class="affiliate-name">${item.name}</div>
+                <div class="affiliate-blurb">${item.blurb || ""}</div>
+              </div>
+              <a class="btn-tech btn-tech-solid" href="${item.url}" target="_blank" rel="noopener">Shop</a>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // Contact modal
+  const contactModal = document.getElementById("contactModal");
+  allModals.push(contactModal);
+  wireOpen("openContactModal", contactModal);
+  wireOpen("navWorkBtn", contactModal);
+  wireOpen("aboutWorkBtn", contactModal);
+  const closeContact = document.getElementById("closeContactModal");
+  if (closeContact) closeContact.addEventListener("click", () => closeModal(contactModal));
+
+  const contactForm = document.getElementById("contactForm");
+  if (contactForm) {
+    contactForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        const formData = new FormData(contactForm);
+        const body = new URLSearchParams(formData).toString();
+        const res = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body
+        });
+        if (!res.ok) throw new Error(`Form submit failed: ${res.status}`);
+        contactForm.innerHTML = `
+          <div style="padding:12px 4px;">
+            <h3 style="margin:0 0 8px 0;">Sent</h3>
+            <p class="muted" style="margin:0;">Your message reached Mr. Distort. I'll get back to you ASAP.</p>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong sending the message. Please try again.");
+      }
+    });
+  }
+
+  // Consultation modal
+  const guestBookModal = document.getElementById("guestBookModal");
+  allModals.push(guestBookModal);
+  wireOpen("openGuestBookModal", guestBookModal);
+  wireOpen("openGuestBookModal2", guestBookModal);
+  const closeGuestBook = document.getElementById("closeGuestBookModal");
+  if (closeGuestBook) closeGuestBook.addEventListener("click", () => closeModal(guestBookModal));
+
+  const consultForm = document.getElementById("consultForm");
+  if (consultForm) {
+    consultForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const services = [...consultForm.querySelectorAll('input[name="services"]:checked')].map(cb => cb.value);
+      if (services.length === 0) {
+        alert("Please select at least one service.");
+        return;
+      }
+      const payload = {
+        name: consultForm.querySelector('[name="name"]').value,
+        socialName: consultForm.querySelector('[name="socialName"]').value,
+        discordName: consultForm.querySelector('[name="discordName"]').value,
+        services: services.join(", "),
+        vision: consultForm.querySelector('[name="vision"]').value,
+      };
+      try {
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzs4xkctSMSsK2ttM_tPRfFGWphfqWW667vmzOd8zdUwRZzXnidf3MyrHmyHKfiPXc-wQ/exec";
+        const params = new URLSearchParams();
+        Object.entries(payload).forEach(([k, v]) => params.append(k, v));
+        await fetch(SCRIPT_URL + "?" + params.toString(), { method: "GET", mode: "no-cors" });
+        consultForm.innerHTML = `
+          <div style="padding:12px 4px; text-align:center;">
+            <h3 style="margin:0 0 8px 0;">Request Received</h3>
+            <p class="muted" style="margin:0;">I'll reach out via Discord DM shortly. Looking forward to working with you!</p>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  }
+
+  window.addEventListener("click", (e) => {
+    allModals.forEach(m => { if (e.target === m) closeModal(m); });
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") allModals.forEach(m => closeModal(m));
+  });
+
+  // =========
+  // Mobile nav toggle
+  // =========
+  const navToggle = document.getElementById("navToggle");
+  const navLinks = document.getElementById("navLinks");
+  if (navToggle && navLinks) {
+    navToggle.addEventListener("click", () => navLinks.classList.toggle("open"));
+    navLinks.querySelectorAll("a").forEach(a => a.addEventListener("click", () => navLinks.classList.remove("open")));
+  }
+
+  // =========
+  // Nav scrollspy
+  // =========
+  const sections = document.querySelectorAll("section[id]");
+  const navAnchors = document.querySelectorAll(".nav-links a");
+  if (sections.length && navAnchors.length) {
+    const spyObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("id");
+          navAnchors.forEach(a => {
+            a.classList.toggle("active", a.getAttribute("href") === `#${id}`);
+          });
+        }
+      });
+    }, { rootMargin: "-40% 0px -50% 0px" });
+    sections.forEach(s => spyObserver.observe(s));
+  }
+
+  // =========
+  // Schedule + Hero Status Ticker (Google Calendar API v3, direct from browser)
+  // =========
+  const CALENDAR_ID = "mrdistort1@gmail.com";
+  const CALENDAR_API_KEY = "AIzaSyBYIwQDOhLOtyh5pYWbLRVbUdssHW0Pfck";
+
+  const scheduleList = document.getElementById("scheduleList");
+  const heroStatusText = document.getElementById("heroStatusText");
+  const heroStatusDot = document.getElementById("heroStatusDot");
+
+  async function loadCalendar() {
+    try {
+      const now = new Date();
+      const startOfWeek = new Date(now);
+      startOfWeek.setHours(0, 0, 0, 0);
+      startOfWeek.setDate(now.getDate() - now.getDay());
+
+      const timeMin = startOfWeek.toISOString();
+      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events` +
+        `?key=${CALENDAR_API_KEY}&singleEvents=true&orderBy=startTime&maxResults=50&timeMin=${encodeURIComponent(timeMin)}`;
+
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Calendar API failed: ${res.status}`);
+      const data = await res.json();
+      const allEvents = (data.items || []).map(parseGoogleEvent).filter(Boolean);
+
+      renderWeekSchedule(allEvents);
+      renderHeroStatus(allEvents);
+    } catch (err) {
+      console.error(err);
+      if (scheduleList) scheduleList.innerHTML = `<div class="muted">Could not load schedule. Check back soon!</div>`;
+      if (heroStatusText) heroStatusText.textContent = "Schedule unavailable";
+    }
+  }
+
+  function parseGoogleEvent(item) {
+    const summary = item.summary || "Stream";
+    const startRaw = item.start?.dateTime || item.start?.date;
+    const endRaw = item.end?.dateTime || item.end?.date;
+    if (!startRaw) return null;
+    const start = new Date(startRaw);
+    const end = endRaw ? new Date(endRaw) : new Date(start.getTime() + 2 * 60 * 60 * 1000);
+    if (isNaN(start)) return null;
+    return { summary, start, end };
+  }
+
+  function renderWeekSchedule(allEvents) {
+    if (!scheduleList) return;
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    const weekEvents = allEvents.filter(e => e.start >= startOfWeek && e.start < endOfWeek);
+
+    if (weekEvents.length === 0) {
+      scheduleList.innerHTML = `<div class="muted">No streams scheduled this week. Check back soon!</div>`;
+      return;
+    }
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    scheduleList.innerHTML = weekEvents.map(e => {
+      const d = e.start;
+      const hours = d.getHours();
+      const mins = d.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const hour12 = ((hours % 12) || 12);
+      return `
+        <div class="schedule-item">
+          <div class="schedule-date">
+            <span class="schedule-day">${days[d.getDay()]}</span>
+            <span class="schedule-month-date">${months[d.getMonth()]} ${d.getDate()}</span>
+          </div>
+          <div class="schedule-info">
+            <div class="schedule-title">${e.summary}</div>
+            <div class="schedule-time muted">${hour12}:${mins} ${ampm} ET</div>
+          </div>
+          <i class="bi bi-broadcast icon-twitch" style="font-size:1.1rem;"></i>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function renderHeroStatus(allEvents) {
+    if (!heroStatusText) return;
+    const now = new Date();
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    const liveEvent = allEvents.find(e => now >= e.start && now < e.end);
+    if (liveEvent) {
+      heroStatusText.innerHTML = `Live now — ${liveEvent.summary} · <a href="https://www.twitch.tv/mrdistort" target="_blank" rel="noopener">Watch on Twitch</a>`;
+      if (heroStatusDot) heroStatusDot.classList.add("is-live");
+      return;
+    }
+
+    const nextEvent = allEvents.find(e => e.start > now);
+    if (nextEvent) {
+      const d = nextEvent.start;
+      const hours = d.getHours();
+      const mins = d.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const hour12 = ((hours % 12) || 12);
+      heroStatusText.textContent = `Offline — next stream ${days[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()} at ${hour12}:${mins} ${ampm} ET`;
+    } else {
+      heroStatusText.textContent = "Offline — schedule coming soon";
+    }
+    if (heroStatusDot) heroStatusDot.classList.remove("is-live");
+  }
+
+  loadCalendar();
+});
