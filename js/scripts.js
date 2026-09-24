@@ -11,60 +11,164 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   const platformStats = [
-    { platform: "Twitch", brand: "twitch", value: "462", label: "Followers" },
-    { platform: "Kick", brand: "kick", value: "26", label: "Followers" },
-    { platform: "TikTok", brand: "tiktok", value: "226", label: "Followers" },
-    { platform: "Instagram", brand: "instagram", value: "199", label: "Followers" },
-    { platform: "YouTube", brand: "youtube", value: "468", label: "Subscribers" },
+    { value: 462, label: "Twitch Followers" },
+    { value: 26, label: "Kick Followers" },
+    { value: 226, label: "TikTok Followers" },
+    { value: 199, label: "Instagram Followers" },
+    { value: 468, label: "YouTube Subscribers" },
   ];
 
-  const affiliates = [
+  const creatorPrograms = [
     {
-      category: "Streaming Gear",
-      items: [
-        { name: "OBSBOT", url: "https://www.obsbot.com/?rfsn=8969544.bff71d&utm_source=refersion&utm_medium=affiliate&utm_campaign=8969544.bff71d", logo: "images/affiliates/obsbot.png", blurb: "Cameras + creator gear" },
-        { name: "Keychron", url: "https://www.keychron.com/?ref=MRDISTORT", logo: "images/affiliates/keychron.jpeg", blurb: "Keyboards" },
-        { name: "Razer", url: "https://razer.a9yw.net/c/6818512/642901/10229", logo: "images/affiliates/razer-team-logo.png", blurb: "Gaming peripherals" }
-      ]
+      name: "Razer Creator Program",
+      logo: "images/affiliates/razer-team-logo.png",
+      blurb: "Official creator partner for gaming peripherals & gear.",
+      url: "https://razer.a9yw.net/c/6818512/642901/10229",
+      brk: null
     },
     {
-      category: "Energy",
-      items: [
-        { name: "Dubby Energy", url: "https://www.dubby.gg/discount/MRDISTORT?ref=rxvggddk", logo: "images/affiliates/dubby.png", blurb: "Energy drink" }
-      ]
+      name: "Marvel Rivals Climber Program",
+      logo: null,
+      initials: "MR",
+      blurb: "Competitive climb partner content for Marvel Rivals.",
+      url: "#",
+      brk: "var(--purple)"
     },
     {
-      category: "Tech / Lifestyle",
-      items: [
-        { name: "HidrateSpark", url: "https://hidratespark.com/stephen35", logo: "images/affiliates/hidrate.png", blurb: "Smart water bottle" }
-      ]
-    },
-    {
-      category: "Collectibles",
-      items: [
-        { name: "Neosabers", url: "https://neosabers.com/?ref=MRDISTORT", logo: "images/affiliates/neosaber.png", blurb: "Replica lightsabers" }
-      ]
+      name: "Meld Creator Program",
+      logo: null,
+      initials: "ML",
+      blurb: "Creator partner program with Meld.",
+      url: "#",
+      brk: "var(--cyan)"
     }
+  ];
+
+  const otherAffiliates = [
+    { category: "Streaming Gear", items: [
+      { name: "OBSBOT", url: "https://www.obsbot.com/?rfsn=8969544.bff71d&utm_source=refersion&utm_medium=affiliate&utm_campaign=8969544.bff71d", logo: "images/affiliates/obsbot.png", blurb: "AI cameras + creator gear" },
+      { name: "Keychron", url: "https://www.keychron.com/?ref=MRDISTORT", logo: "images/affiliates/keychron.jpeg", blurb: "Keyboards" }
+    ]},
+    { category: "Energy", items: [
+      { name: "Dubby Energy", url: "https://www.dubby.gg/discount/MRDISTORT?ref=rxvggddk", logo: "images/affiliates/dubby.png", blurb: "Energy drink" }
+    ]},
+    { category: "Tech / Lifestyle", items: [
+      { name: "HidrateSpark", url: "https://hidratespark.com/stephen35", logo: "images/affiliates/hidrate.png", blurb: "Smart water bottle" }
+    ]},
+    { category: "Collectibles", items: [
+      { name: "Neosabers", url: "https://neosabers.com/?ref=MRDISTORT", logo: "images/affiliates/neosaber.png", blurb: "Replica lightsabers" }
+    ]}
   ];
 
   function brandIconClass(brand) {
     switch (brand) {
       case "twitch": return "icon-twitch";
-      case "tiktok": return "icon-tiktok";
+      case "tiktok": return "";
       case "instagram": return "icon-instagram";
       case "youtube": return "icon-youtube";
       default: return "";
     }
   }
 
-  function platformBrandToBootstrapIcon(brand) {
-    switch (brand) {
-      case "twitch": return "bi-twitch";
-      case "tiktok": return "bi-tiktok";
-      case "instagram": return "bi-instagram";
-      case "youtube": return "bi-youtube";
-      default: return "bi-globe";
+  // =========
+  // Platform strip
+  // =========
+  const platformStrip = document.getElementById("platformStrip");
+  if (platformStrip) {
+    platformStrip.innerHTML = socials.map(s => {
+      const icon = s.brand === "kick"
+        ? `<span class="kick-badge" aria-hidden="true">K</span>`
+        : `<i class="bi ${s.icon} ${brandIconClass(s.brand)}" aria-hidden="true"></i>`;
+      return `<a href="${s.url}" target="_blank" rel="noopener">${icon}<span>${s.name}</span></a>`;
+    }).join("");
+  }
+
+  // =========
+  // Footer socials
+  // =========
+  const footerSocials = document.getElementById("footerSocials");
+  if (footerSocials) {
+    footerSocials.innerHTML = socials.map(s => {
+      const icon = s.brand === "kick"
+        ? `<span class="kick-badge" aria-hidden="true">K</span>`
+        : `<i class="bi ${s.icon}" aria-hidden="true"></i>`;
+      return `<a href="${s.url}" target="_blank" rel="noopener" aria-label="${s.name}">${icon}</a>`;
+    }).join("");
+  }
+
+  // =========
+  // Marquee (affiliate + program logos, duplicated for seamless loop)
+  // =========
+  const marqueeTrack = document.getElementById("marqueeTrack");
+  if (marqueeTrack) {
+    const logos = [
+      "images/affiliates/razer-team-logo.png",
+      "images/affiliates/obsbot.png",
+      "images/affiliates/dubby.png",
+      "images/affiliates/keychron.jpeg",
+      "images/affiliates/hidrate.png",
+      "images/affiliates/neosaber.png",
+    ];
+    const set = logos.map(src => `<img src="${src}" alt="" aria-hidden="true">`).join("");
+    marqueeTrack.innerHTML = set + set;
+  }
+
+  // =========
+  // Stats grid + animated counters
+  // =========
+  const statsGrid = document.getElementById("statsGrid");
+  if (statsGrid) {
+    statsGrid.innerHTML = platformStats.map((s, i) => `
+      <div class="stat-card">
+        <div class="stat-number" data-target="${s.value}" data-counted="false">0</div>
+        <div class="stat-label">${s.label}</div>
+      </div>
+    `).join("");
+
+    const counters = statsGrid.querySelectorAll(".stat-number");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.target.dataset.counted === "false") {
+          entry.target.dataset.counted = "true";
+          animateCount(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(c => observer.observe(c));
+  }
+
+  function animateCount(el) {
+    const target = parseInt(el.dataset.target, 10);
+    const duration = 900;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target).toLocaleString();
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toLocaleString();
     }
+    requestAnimationFrame(tick);
+  }
+
+  // =========
+  // Creator programs
+  // =========
+  const programsGrid = document.getElementById("programsGrid");
+  if (programsGrid) {
+    programsGrid.innerHTML = creatorPrograms.map(p => {
+      const visual = p.logo
+        ? `<div class="program-logo-wrap"><img src="${p.logo}" alt="${p.name} logo"></div>`
+        : `<div class="program-logo-wrap"><div class="program-badge-icon" style="${p.brk ? `--brk:${p.brk};` : ''}">${p.initials}</div></div>`;
+      return `
+        <div class="corner-panel program-card" ${p.brk ? `style="--brk:${p.brk};"` : ''}>
+          ${visual}
+          <div class="program-name">${p.name}</div>
+          <p class="program-blurb">${p.blurb}</p>
+          <a class="btn-tech btn-tech-accent" href="${p.url}" target="_blank" rel="noopener">View Program →</a>
+        </div>
+      `;
+    }).join("");
   }
 
   // =========
@@ -75,102 +179,162 @@ document.addEventListener("DOMContentLoaded", () => {
     modalEl.style.display = "block";
     document.body.style.overflow = "hidden";
   }
-
   function closeModal(modalEl) {
     if (!modalEl) return;
     modalEl.style.display = "none";
     document.body.style.overflow = "";
   }
-
-  function wireModal(openBtnId, closeBtnId, modalId, onOpen) {
-    const modal = document.getElementById(modalId);
-    const openBtn = document.getElementById(openBtnId);
-    const closeBtn = document.getElementById(closeBtnId);
-
-    if (openBtn) {
-      openBtn.style.cursor = "pointer";
-      openBtn.addEventListener("click", () => {
-        if (onOpen) onOpen();
-        openModal(modal);
-      });
-    }
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => closeModal(modal));
-    }
-    return modal;
+  function wireOpen(triggerId, modalEl) {
+    const trigger = document.getElementById(triggerId);
+    if (trigger) trigger.addEventListener("click", () => openModal(modalEl));
   }
 
   const allModals = [];
 
-  // =========
-  // Socials panel + modal
-  // =========
-  function renderSocialLinks() {
-    const socialLinks = document.getElementById("socialLinks");
-    if (!socialLinks) return;
-    socialLinks.innerHTML = socials.map(s => {
-      const leftIcon = s.brand === "kick"
-        ? `<span class="kick-badge" aria-hidden="true">K</span>`
-        : `<i class="bi ${s.icon} ${brandIconClass(s.brand)}" aria-hidden="true"></i>`;
-      return `
-        <a href="${s.url}" target="_blank" rel="noopener">
-          <span class="left">${leftIcon}<strong>${s.name}</strong></span>
-          <span class="right"><i class="bi bi-box-arrow-up-right"></i></span>
-        </a>
-      `;
-    }).join("");
-  }
-  renderSocialLinks();
-  allModals.push(wireModal("openSocialsModal", "closeSocialsModal", "socialsModal"));
+  // Affiliate modal
+  const affiliateModal = document.getElementById("affiliateModal");
+  allModals.push(affiliateModal);
+  wireOpen("openAffiliateModal", affiliateModal);
+  const closeAffiliate = document.getElementById("closeAffiliateModal");
+  if (closeAffiliate) closeAffiliate.addEventListener("click", () => closeModal(affiliateModal));
 
-  // =========
-  // Stats panel (glance) + modal (carousel)
-  // =========
-  const glanceNumber = document.getElementById("glanceStatNumber");
-  const glanceCaption = document.getElementById("glanceStatCaption");
-  if (glanceNumber && glanceCaption) {
-    const s = platformStats[0];
-    glanceNumber.textContent = s.value;
-    glanceCaption.textContent = `${s.platform} ${s.label}`;
+  const affiliateBody = document.getElementById("affiliateModalBody");
+  if (affiliateBody) {
+    affiliateBody.innerHTML = otherAffiliates.map(cat => `
+      <div class="affiliate-category">
+        <h4>${cat.category}</h4>
+        <div class="affiliate-items">
+          ${cat.items.map(item => `
+            <div class="affiliate-card">
+              <img class="affiliate-logo" src="${item.logo}" alt="${item.name} logo">
+              <div class="affiliate-meta">
+                <div class="affiliate-name">${item.name}</div>
+                <div class="affiliate-blurb">${item.blurb || ""}</div>
+              </div>
+              <a class="btn-tech btn-tech-solid" href="${item.url}" target="_blank" rel="noopener">Shop</a>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `).join("");
   }
 
-  let statIndex = 0;
-  const statsContent = document.querySelector(".stats-content");
-  const statsLeft = document.querySelector(".stats-left");
-  const statsRight = document.querySelector(".stats-right");
+  // Contact modal
+  const contactModal = document.getElementById("contactModal");
+  allModals.push(contactModal);
+  wireOpen("openContactModal", contactModal);
+  wireOpen("navWorkBtn", contactModal);
+  wireOpen("heroWorkBtn", contactModal);
+  wireOpen("aboutWorkBtn", contactModal);
+  const closeContact = document.getElementById("closeContactModal");
+  if (closeContact) closeContact.addEventListener("click", () => closeModal(contactModal));
 
-  function renderStat() {
-    if (!statsContent) return;
-    const s = platformStats[statIndex];
-    const iconHtml = s.brand === "kick"
-      ? `<span class="kick-badge" aria-hidden="true">K</span>`
-      : `<i class="bi ${platformBrandToBootstrapIcon(s.brand)} platform-icon ${brandIconClass(s.brand)}" aria-hidden="true"></i>`;
-    statsContent.innerHTML = `
-      <div class="stat-platform">${iconHtml}<span>${s.platform}</span></div>
-      <div class="stat-number">${s.value}</div>
-      <div class="stat-label muted">${s.label}</div>
-    `;
+  const contactForm = document.getElementById("contactForm");
+  if (contactForm) {
+    contactForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        const formData = new FormData(contactForm);
+        const body = new URLSearchParams(formData).toString();
+        const res = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body
+        });
+        if (!res.ok) throw new Error(`Form submit failed: ${res.status}`);
+        contactForm.innerHTML = `
+          <div style="padding:12px 4px;">
+            <h3 style="margin:0 0 8px 0;">Sent</h3>
+            <p class="muted" style="margin:0;">Your message reached Mr. Distort. I'll get back to you ASAP.</p>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong sending the message. Please try again.");
+      }
+    });
   }
 
-  if (statsLeft) statsLeft.addEventListener("click", () => {
-    statIndex = (statIndex - 1 + platformStats.length) % platformStats.length;
-    renderStat();
+  // Consultation modal
+  const guestBookModal = document.getElementById("guestBookModal");
+  allModals.push(guestBookModal);
+  wireOpen("openGuestBookModal", guestBookModal);
+  wireOpen("openGuestBookModal2", guestBookModal);
+  const closeGuestBook = document.getElementById("closeGuestBookModal");
+  if (closeGuestBook) closeGuestBook.addEventListener("click", () => closeModal(guestBookModal));
+
+  const consultForm = document.getElementById("consultForm");
+  if (consultForm) {
+    consultForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const services = [...consultForm.querySelectorAll('input[name="services"]:checked')].map(cb => cb.value);
+      if (services.length === 0) {
+        alert("Please select at least one service.");
+        return;
+      }
+      const payload = {
+        name: consultForm.querySelector('[name="name"]').value,
+        socialName: consultForm.querySelector('[name="socialName"]').value,
+        discordName: consultForm.querySelector('[name="discordName"]').value,
+        services: services.join(", "),
+        vision: consultForm.querySelector('[name="vision"]').value,
+      };
+      try {
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzs4xkctSMSsK2ttM_tPRfFGWphfqWW667vmzOd8zdUwRZzXnidf3MyrHmyHKfiPXc-wQ/exec";
+        const params = new URLSearchParams();
+        Object.entries(payload).forEach(([k, v]) => params.append(k, v));
+        await fetch(SCRIPT_URL + "?" + params.toString(), { method: "GET", mode: "no-cors" });
+        consultForm.innerHTML = `
+          <div style="padding:12px 4px; text-align:center;">
+            <h3 style="margin:0 0 8px 0;">Request Received</h3>
+            <p class="muted" style="margin:0;">I'll reach out via Discord DM shortly. Looking forward to working with you!</p>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  }
+
+  window.addEventListener("click", (e) => {
+    allModals.forEach(m => { if (e.target === m) closeModal(m); });
   });
-  if (statsRight) statsRight.addEventListener("click", () => {
-    statIndex = (statIndex + 1) % platformStats.length;
-    renderStat();
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") allModals.forEach(m => closeModal(m));
   });
-  renderStat();
-
-  allModals.push(wireModal("openStatsModal", "closeStatsModal", "statsModal"));
 
   // =========
-  // Bio modal
+  // Mobile nav toggle
   // =========
-  allModals.push(wireModal("openBioModal", "closeBioModal", "bioModal"));
+  const navToggle = document.getElementById("navToggle");
+  const navLinks = document.getElementById("navLinks");
+  if (navToggle && navLinks) {
+    navToggle.addEventListener("click", () => navLinks.classList.toggle("open"));
+    navLinks.querySelectorAll("a").forEach(a => a.addEventListener("click", () => navLinks.classList.remove("open")));
+  }
 
   // =========
-  // Upcoming Streams Schedule (Google Calendar iCal via Netlify function)
+  // Nav scrollspy
+  // =========
+  const sections = document.querySelectorAll("section[id]");
+  const navAnchors = document.querySelectorAll(".nav-links a");
+  if (sections.length && navAnchors.length) {
+    const spyObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("id");
+          navAnchors.forEach(a => {
+            a.classList.toggle("active", a.getAttribute("href") === `#${id}`);
+          });
+        }
+      });
+    }, { rootMargin: "-40% 0px -50% 0px" });
+    sections.forEach(s => spyObserver.observe(s));
+  }
+
+  // =========
+  // Schedule (Google Calendar iCal via Netlify function)
   // =========
   const ICAL_URL = "/.netlify/functions/calendar";
   const scheduleList = document.getElementById("scheduleList");
@@ -209,7 +373,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!date || date < startOfWeek || date >= endOfWeek) continue;
       events.push({ summary, date });
     }
-
     events.sort((a, b) => a.date - b.date);
     return events;
   }
@@ -253,132 +416,4 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   loadSchedule();
-
-  // =========
-  // Affiliate modal
-  // =========
-  const affiliateBody = document.getElementById("affiliateModalBody");
-
-  function buildAffiliateModal() {
-    if (!affiliateBody) return;
-    affiliateBody.innerHTML = affiliates.map(cat => `
-      <div class="affiliate-category">
-        <h4>${cat.category}</h4>
-        <div class="affiliate-items">
-          ${cat.items.map(item => `
-            <div class="affiliate-card">
-              <img class="affiliate-logo" src="${item.logo}" alt="${item.name} logo">
-              <div class="affiliate-meta">
-                <div class="affiliate-name">${item.name}</div>
-                <div class="affiliate-blurb">${item.blurb || ""}</div>
-              </div>
-              <a class="btn btn-dark" href="${item.url}" target="_blank" rel="noopener">
-                Shop <i class="bi bi-box-arrow-up-right"></i>
-              </a>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-    `).join("");
-  }
-  buildAffiliateModal();
-  allModals.push(wireModal("openAffiliateModal", "closeAffiliateModal", "affiliateModal"));
-
-  // =========
-  // Contact modal + form
-  // =========
-  const contactModal = wireModal("openContactModal", "closeContactModal", "contactModal");
-  allModals.push(contactModal);
-
-  const contactForm = document.getElementById("contactForm");
-  if (contactForm) {
-    contactForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      try {
-        const formData = new FormData(contactForm);
-        const body = new URLSearchParams(formData).toString();
-        const res = await fetch("/", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body
-        });
-        if (!res.ok) throw new Error(`Form submit failed: ${res.status}`);
-        contactForm.innerHTML = `
-          <div style="padding:12px 4px;">
-            <h3 style="margin:0 0 8px 0;">Sent</h3>
-            <p class="muted" style="margin:0;">Your message reached Mr. Distort. I'll get back to you ASAP.</p>
-          </div>
-        `;
-      } catch (err) {
-        console.error(err);
-        alert("Something went wrong sending the message. Please try again.");
-      }
-    });
-  }
-
-  // =========
-  // Consultation modal + form
-  // =========
-  allModals.push(wireModal("openGuestBookModal", "closeGuestBookModal", "guestBookModal"));
-
-  const consultForm = document.getElementById("consultForm");
-  if (consultForm) {
-    consultForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const services = [...consultForm.querySelectorAll('input[name="services"]:checked')]
-        .map(cb => cb.value);
-
-      if (services.length === 0) {
-        alert("Please select at least one service.");
-        return;
-      }
-
-      const payload = {
-        name: consultForm.querySelector('[name="name"]').value,
-        socialName: consultForm.querySelector('[name="socialName"]').value,
-        discordName: consultForm.querySelector('[name="discordName"]').value,
-        services: services.join(", "),
-        vision: consultForm.querySelector('[name="vision"]').value,
-      };
-
-      try {
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzs4xkctSMSsK2ttM_tPRfFGWphfqWW667vmzOd8zdUwRZzXnidf3MyrHmyHKfiPXc-wQ/exec";
-        const params = new URLSearchParams();
-        params.append("name", payload.name);
-        params.append("socialName", payload.socialName);
-        params.append("discordName", payload.discordName);
-        params.append("services", payload.services);
-        params.append("vision", payload.vision);
-
-        await fetch(SCRIPT_URL + "?" + params.toString(), {
-          method: "GET",
-          mode: "no-cors"
-        });
-
-        consultForm.innerHTML = `
-          <div style="padding:12px 4px; text-align:center;">
-            <h3 style="margin:0 0 8px 0;">Request Received</h3>
-            <p class="muted" style="margin:0;">I'll reach out via Discord DM shortly. Looking forward to working with you!</p>
-          </div>
-        `;
-      } catch (err) {
-        console.error(err);
-        alert("Something went wrong. Please try again.");
-      }
-    });
-  }
-
-  // =========
-  // Close modals on outside click or ESC
-  // =========
-  window.addEventListener("click", (e) => {
-    allModals.forEach(m => { if (e.target === m) closeModal(m); });
-  });
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      allModals.forEach(m => closeModal(m));
-    }
-  });
 });
