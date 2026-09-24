@@ -11,10 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   const platformStats = [
-    { value: 499, label: "Twitch Followers" },
-    { value: 27, label: "Kick Followers" },
-    { value: 246, label: "TikTok Followers" },
-    { value: 221, label: "Instagram Followers" },
+    { value: 462, label: "Twitch Followers" },
+    { value: 26, label: "Kick Followers" },
+    { value: 226, label: "TikTok Followers" },
+    { value: 199, label: "Instagram Followers" },
     { value: 468, label: "YouTube Subscribers" },
   ];
 
@@ -224,7 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
   allModals.push(contactModal);
   wireOpen("openContactModal", contactModal);
   wireOpen("navWorkBtn", contactModal);
-  wireOpen("heroWorkBtn", contactModal);
   wireOpen("aboutWorkBtn", contactModal);
   const closeContact = document.getElementById("closeContactModal");
   if (closeContact) closeContact.addEventListener("click", () => closeModal(contactModal));
@@ -334,22 +333,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========
-  // Schedule (Google Calendar iCal via Netlify function)
+  // Schedule + Hero Status Ticker (Google Calendar iCal via Netlify function)
   // =========
   const ICAL_URL = "/.netlify/functions/calendar";
   const scheduleList = document.getElementById("scheduleList");
+  const heroStatusText = document.getElementById("heroStatusText");
+  const heroStatusDot = document.getElementById("heroStatusDot");
 
-  async function loadSchedule() {
-    if (!scheduleList) return;
+  async function loadCalendar() {
     try {
       const res = await fetch(ICAL_URL);
       if (!res.ok) throw new Error("Failed to fetch calendar");
       const text = await res.text();
-      const events = parseIcal(text);
-      renderSchedule(events);
+      const allEvents = parseIcal(text);
+      renderWeekSchedule(allEvents);
+      renderHeroStatus(allEvents);
     } catch (err) {
       console.error(err);
-      scheduleList.innerHTML = `<div class="muted">Could not load schedule. Check back soon!</div>`;
+      if (scheduleList) scheduleList.innerHTML = `<div class="muted">Could not load schedule. Check back soon!</div>`;
+      if (heroStatusText) heroStatusText.textContent = "Schedule unavailable";
     }
   }
 
@@ -358,22 +360,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const blocks = text.split("BEGIN:VEVENT");
     blocks.shift();
 
-    const now = new Date();
-    const startOfWeek = new Date(now);
-    startOfWeek.setHours(0, 0, 0, 0);
-    startOfWeek.setDate(now.getDate() - now.getDay());
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 7);
-
     for (const block of blocks) {
       const summary = (block.match(/SUMMARY:(.+)/)?.[1] || "Stream").trim();
-      const dtstart = block.match(/DTSTART(?:;[^:]+)?:(\d+T?\d+)/)?.[1];
-      if (!dtstart) continue;
-      const date = parseIcalDate(dtstart);
-      if (!date || date < startOfWeek || date >= endOfWeek) continue;
-      events.push({ summary, date });
+      const dtstartMatch = block.match(/DTSTART(?:;[^:]+)?:(\d+T?\d+Z?)/)?.[1];
+      const dtendMatch = block.match(/DTEND(?:;[^:]+)?:(\d+T?\d+Z?)/)?.[1];
+      if (!dtstartMatch) continue;
+      const start = parseIcalDate(dtstartMatch);
+      const end = dtendMatch ? parseIcalDate(dtendMatch) : new Date(start.getTime() + 2 * 60 * 60 * 1000);
+      if (!start) continue;
+      events.push({ summary, start, end });
     }
-    events.sort((a, b) => a.date - b.date);
+    events.sort((a, b) => a.start - b.start);
     return events;
   }
 
@@ -385,16 +382,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function renderSchedule(events) {
+  function renderWeekSchedule(allEvents) {
     if (!scheduleList) return;
-    if (events.length === 0) {
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    const weekEvents = allEvents.filter(e => e.start >= startOfWeek && e.start < endOfWeek);
+
+    if (weekEvents.length === 0) {
       scheduleList.innerHTML = `<div class="muted">No streams scheduled this week. Check back soon!</div>`;
       return;
     }
     const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
     const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    scheduleList.innerHTML = events.map(e => {
-      const d = e.date;
+    scheduleList.innerHTML = weekEvents.map(e => {
+      const d = e.start;
       const hours = d.getHours();
       const mins = d.getMinutes().toString().padStart(2, "0");
       const ampm = hours >= 12 ? "PM" : "AM";
@@ -415,5 +421,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }).join("");
   }
 
-  loadSchedule();
+  function renderHeroStatus(allEvents) {
+    if (!heroStatusText) return;
+    const now = new Date();
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    const liveEvent = allEvents.find(e => now >= e.start && now < e.end);
+    if (liveEvent) {
+      heroStatusText.innerHTML = `Live now — ${liveEvent.summary} · <a href="https://www.twitch.tv/mrdistort" target="_blank" rel="noopener">Watch on Twitch</a>`;
+      if (heroStatusDot) heroStatusDot.classList.add("is-live");
+      return;
+    }
+
+    const nextEvent = allEvents.find(e => e.start > now);
+    if (nextEvent) {
+      const d = nextEvent.start;
+      const hours = d.getHours();
+      const mins = d.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const hour12 = ((hours % 12) || 12);
+      heroStatusText.textContent = `Offline — next stream ${days[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()} at ${hour12}:${mins} ${ampm} ET`;
+    } else {
+      heroStatusText.textContent = "Offline — schedule coming soon";
+    }
+    if (heroStatusDot) heroStatusDot.classList.remove("is-live");
+  }
+
+  loadCalendar();
 });
