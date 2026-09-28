@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       name: "Razer Creator Program",
       logo: "images/affiliates/razer-team-logo.png",
-      blurb: "Official creator partner for gaming peripherals & gear.",
+      blurb: "Official gear partner. Razer peripherals, zero compromise.",
       url: "https://razer.a9yw.net/c/6818512/642901/10229",
       brk: null
     },
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       name: "Marvel Rivals Climber Program",
       logo: "images/affiliates/marvel.png",
       initials: "MR",
-      blurb: "Competitive climb partner content for Marvel Rivals.",
+      blurb: "The climb to Rivals Partner begins here.",
       url: "#",
       brk: "var(--purple)"
     },
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
       name: "Meld Creator Program",
       logo: "images/affiliates/meld.png",
       initials: "ML",
-      blurb: "Creator partner program with Meld.",
+      blurb: "Meld Studio Advocate — building cleaner streams with better tools",
       url: "https://meld-studio.dub.link/mr-distort",
       brk: "var(--cyan)"
     }
