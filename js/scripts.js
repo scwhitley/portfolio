@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       name: "Meld Creator Program",
-      logo: "images/affiliates/meld.png,
+      logo: "images/affiliates/meld.png",
       initials: "ML",
       blurb: "Creator partner program with Meld.",
       url: "https://meld-studio.dub.link/mr-distort",
