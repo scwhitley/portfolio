@@ -36,10 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       name: "Meld Creator Program",
-      logo: null,
+      logo: "images/affiliates/meld.png,
       initials: "ML",
       blurb: "Creator partner program with Meld.",
-      url: "#",
+      url: "https://meld-studio.dub.link/mr-distort",
       brk: "var(--cyan)"
     }
   ];
@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "images/affiliates/keychron.jpeg",
       "images/affiliates/hidrate.png",
       "images/affiliates/neosaber.png",
+      "images/affiliates/meld.png",
     ];
     const set = logos.map(src => `<img src="${src}" alt="" aria-hidden="true">`).join("");
     marqueeTrack.innerHTML = set + set;
