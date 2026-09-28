@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       name: "Marvel Rivals Climber Program",
-      logo: null,
+      logo: "images/affiliates/marvel.png",
       initials: "MR",
       blurb: "Competitive climb partner content for Marvel Rivals.",
       url: "#",
@@ -109,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "images/affiliates/hidrate.png",
       "images/affiliates/neosaber.png",
       "images/affiliates/meld.png",
+      "images/affiliates/marvel.png",
     ];
     const set = logos.map(src => `<img src="${src}" alt="" aria-hidden="true">`).join("");
     marqueeTrack.innerHTML = set + set;
