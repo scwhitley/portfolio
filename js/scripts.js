@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
       logo: "images/affiliates/razer-team-logo.png",
       blurb: "Official gear partner. Razer peripherals, zero compromise.",
       url: "https://razer.a9yw.net/c/6818512/642901/10229",
+      cta: "Upgrade Your Gear Today →",
       brk: null
     },
     {
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       initials: "ML",
       blurb: "Meld Studio Advocate — building cleaner streams with better tools",
       url: "https://meld-studio.dub.link/mr-distort",
+      cta: "Try Meld Today →",
       brk: "var(--cyan)"
     }
   ];
@@ -167,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ${visual}
           <div class="program-name">${p.name}</div>
           <p class="program-blurb">${p.blurb}</p>
-          <a class="btn-tech btn-tech-accent" href="${p.url}" target="_blank" rel="noopener">View Program →</a>
+          <a class="btn-tech btn-tech-accent" href="${p.url}" target="_blank" rel="noopener">${p.cta || "View Program →"}</a>
         </div>
       `;
     }).join("");
