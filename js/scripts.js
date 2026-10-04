@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   const platformStats = [
-    { value: 498, label: "Twitch Followers" },
+    { value: 499, label: "Twitch Followers" },
     { value: 27, label: "Kick Followers" },
     { value: 245, label: "TikTok Followers" },
     { value: 220, label: "Instagram Followers" },
