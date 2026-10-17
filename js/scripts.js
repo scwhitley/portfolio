@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "Instagram", url: "https://www.instagram.com/mr_distort", icon: "bi-instagram", brand: "instagram" },
     { name: "YouTube", url: "https://www.youtube.com/@Mr_Distort", icon: "bi-youtube", brand: "youtube" },
     { name: "Threads", url: "https://www.threads.com/@mr_distort", icon: "bi-threads", brand: "threads" },
+    { name: "X", url: "https://x.com/mrdistort_", icon: "bi-twitter-x", brand: "x" },
   ];
 
   const platformStats = [
@@ -18,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { value: 220, label: "Instagram Followers" },
     { value: 468, label: "YouTube Subscribers" },
     { value: 0, label: "Threads Followers" }, // UPDATE ME: replace 0 with your real Threads follower count
+    { value: 0, label: "X Followers" }, // UPDATE ME: replace 0 with your real X follower count
   ];
 
   const creatorPrograms = [
