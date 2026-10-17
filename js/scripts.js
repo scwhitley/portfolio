@@ -19,12 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       value: 511, label: "Twitch Followers",
       analytics: {
-        title: "Twitch", period: "Lifetime",
+        title: "Twitch", period: "Since September 5, 2025",
         metrics: [
-          { label: "Avg Followers", value: "0" },
-          { label: "Hours Streamed", value: "0" },
-          { label: "Hours Watched", value: "0" },
-          { label: "Peak Viewers", value: "0" },
+          { label: "Avg Followers", value: "10" },
+          { label: "Hours Streamed", value: "422" },
+          { label: "Hours Watched", value: "4.3K" },
+          { label: "Peak Viewers", value: "58" },
         ]
       }
     },
@@ -45,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
       analytics: {
         title: "TikTok", period: "Last 12 months",
         metrics: [
-          { label: "Video Views", value: "0" },
-          { label: "Profile Views", value: "0" },
-          { label: "Likes", value: "0" },
-          { label: "Comments", value: "0" },
-          { label: "Shares", value: "0" },
+          { label: "Video Views", value: "37.3K" },
+          { label: "Profile Views", value: "463" },
+          { label: "Likes", value: "1.8K" },
+          { label: "Comments", value: "249" },
+          { label: "Shares", value: "086" },
         ]
       }
     },
@@ -58,9 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
       analytics: {
         title: "Instagram", period: "Last 90 days",
         metrics: [
-          { label: "Views", value: "0" },
-          { label: "Interactions", value: "0" },
-          { label: "Profile Visits", value: "0" },
+          { label: "Views", value: "12.8K" },
+          { label: "Interactions", value: "1152"},
+          { label: "Accounts Engaged", value: "337"},
+          { label: "Profile Visits", value: "372" },
         ]
       }
     },
@@ -69,11 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
       analytics: {
         title: "YouTube", period: "Lifetime",
         metrics: [
-          { label: "Views", value: "0" },
-          { label: "Watch Hours", value: "0" },
-          { label: "Thumbnail Impressions", value: "0" },
-          { label: "Shorts", value: "0" },
-          { label: "Long Form", value: "0" },
+          { label: "Views", value: "51.3K" },
+          { label: "Watch Hours", value: "1.8K" },
+          { label: "Thumbnail Impressions", value: "372.1K" },
+          { label: "Shorts", value: "50" },
+          { label: "Long Form", value: "39" },
         ]
       }
     },
@@ -82,9 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
       analytics: {
         title: "Threads", period: "Last 90 days",
         metrics: [
-          { label: "Views", value: "0" },
-          { label: "Viewers", value: "0" },
-          { label: "Interactions", value: "0" },
+          { label: "Views", value: "102.3K" },
+          { label: "Viewers", value: "50.1K" },
+          { label: "Interactions", value: "1.5K" },
         ]
       }
     },
