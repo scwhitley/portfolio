@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { value: 245, label: "TikTok Followers" },
     { value: 220, label: "Instagram Followers" },
     { value: 468, label: "YouTube Subscribers" },
-    { value: 0, label: "Threads Followers" }, // UPDATE ME: replace 0 with your real Threads follower count
+    { value: 30, label: "Threads Followers" }, // UPDATE ME: replace 0 with your real Threads follower count
     { value: 0, label: "X Followers" }, // UPDATE ME: replace 0 with your real X follower count
   ];
 
