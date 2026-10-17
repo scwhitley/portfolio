@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { value: 223, label: "Instagram Followers" },
     { value: 469, label: "YouTube Subscribers" },
     { value: 30, label: "Threads Followers" }, // UPDATE ME: replace 0 with your real Threads follower count
-    { value: 1, label: "X Followers" }, // UPDATE ME: replace 0 with your real X follower count
+    { value: 6, label: "X Followers" }, // UPDATE ME: replace 0 with your real X follower count
   ];
 
   const creatorPrograms = [
