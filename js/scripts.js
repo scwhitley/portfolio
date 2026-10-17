@@ -12,14 +12,83 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "X", url: "https://x.com/mrdistort_", icon: "bi-twitter-x", brand: "x" },
   ];
 
+  // UPDATE ME: "value" is the follower count shown on each stat card.
+  // Click-through analytics: edit the "value" strings under each platform's metrics (text is fine, e.g. "12.5K").
+  // X has no analytics entry on purpose, so its card is not clickable.
   const platformStats = [
-    { value: 511, label: "Twitch Followers" },
-    { value: 27, label: "Kick Followers" },
-    { value: 246, label: "TikTok Followers" },
-    { value: 223, label: "Instagram Followers" },
-    { value: 469, label: "YouTube Subscribers" },
-    { value: 30, label: "Threads Followers" }, // UPDATE ME: replace 0 with your real Threads follower count
-    { value: 6, label: "X Followers" }, // UPDATE ME: replace 0 with your real X follower count
+    {
+      value: 511, label: "Twitch Followers",
+      analytics: {
+        title: "Twitch", period: "Lifetime",
+        metrics: [
+          { label: "Avg Followers", value: "0" },
+          { label: "Hours Streamed", value: "0" },
+          { label: "Hours Watched", value: "0" },
+          { label: "Peak Viewers", value: "0" },
+        ]
+      }
+    },
+    {
+      value: 27, label: "Kick Followers",
+      analytics: {
+        title: "Kick", period: "Lifetime",
+        metrics: [
+          { label: "Avg Followers", value: "0" },
+          { label: "Hours Streamed", value: "0" },
+          { label: "Hours Watched", value: "0" },
+          { label: "Peak Viewers", value: "0" },
+        ]
+      }
+    },
+    {
+      value: 246, label: "TikTok Followers",
+      analytics: {
+        title: "TikTok", period: "Last 12 months",
+        metrics: [
+          { label: "Video Views", value: "0" },
+          { label: "Profile Views", value: "0" },
+          { label: "Likes", value: "0" },
+          { label: "Comments", value: "0" },
+          { label: "Shares", value: "0" },
+        ]
+      }
+    },
+    {
+      value: 223, label: "Instagram Followers",
+      analytics: {
+        title: "Instagram", period: "Last 90 days",
+        metrics: [
+          { label: "Views", value: "0" },
+          { label: "Interactions", value: "0" },
+          { label: "Profile Visits", value: "0" },
+        ]
+      }
+    },
+    {
+      value: 469, label: "YouTube Subscribers",
+      analytics: {
+        title: "YouTube", period: "Lifetime",
+        metrics: [
+          { label: "Views", value: "0" },
+          { label: "Watch Hours", value: "0" },
+          { label: "Thumbnail Impressions", value: "0" },
+          { label: "Shorts", value: "0" },
+          { label: "Long Form", value: "0" },
+        ]
+      }
+    },
+    {
+      value: 30, label: "Threads Followers",
+      analytics: {
+        title: "Threads", period: "Last 90 days",
+        metrics: [
+          { label: "Views", value: "0" },
+          { label: "Viewers", value: "0" },
+          { label: "Interactions", value: "0" },
+        ]
+      }
+    },
+    { value: 6, label: "X Followers" },
   ];
 
   const creatorPrograms = [
@@ -127,11 +196,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const statsGrid = document.getElementById("statsGrid");
   if (statsGrid) {
     statsGrid.innerHTML = platformStats.map((s, i) => `
-      <div class="stat-card">
+      <div class="stat-card${s.analytics ? " has-analytics" : ""}" ${s.analytics ? `data-index="${i}" role="button" tabindex="0" aria-label="${s.label} — view analytics"` : ""}>
         <div class="stat-number" data-target="${s.value}" data-counted="false">0</div>
         <div class="stat-label">${s.label}</div>
+        ${s.analytics ? `<div class="stat-more">Analytics <i class="bi bi-arrow-up-right" aria-hidden="true"></i></div>` : ""}
       </div>
     `).join("");
+
+    const analyticsModal = document.getElementById("analyticsModal");
+    const analyticsBody = document.getElementById("analyticsModalBody");
+    const analyticsTitle = document.getElementById("analyticsModalTitle");
+    const analyticsPeriod = document.getElementById("analyticsModalPeriod");
+    function openAnalytics(card) {
+      const a = platformStats[Number(card.dataset.index)]?.analytics;
+      if (!a || !analyticsModal) return;
+      analyticsTitle.textContent = `${a.title} Analytics`;
+      analyticsPeriod.textContent = a.period;
+      analyticsBody.innerHTML = a.metrics.map(m => `
+        <div class="analytics-metric">
+          <div class="analytics-value">${m.value}</div>
+          <div class="analytics-label">${m.label}</div>
+        </div>
+      `).join("");
+      analyticsModal.style.display = "block";
+      document.body.style.overflow = "hidden";
+    }
+    statsGrid.querySelectorAll(".has-analytics").forEach(card => {
+      card.addEventListener("click", () => openAnalytics(card));
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openAnalytics(card); }
+      });
+    });
+    const closeAnalytics = document.getElementById("closeAnalyticsModal");
+    if (closeAnalytics) closeAnalytics.addEventListener("click", () => closeModal(analyticsModal));
 
     const counters = statsGrid.querySelectorAll(".stat-number");
     const observer = new IntersectionObserver((entries) => {
@@ -198,6 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const allModals = [];
+  allModals.push(document.getElementById("analyticsModal"));
 
   // Affiliate modal
   const affiliateModal = document.getElementById("affiliateModal");
