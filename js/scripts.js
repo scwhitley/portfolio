@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "TikTok", url: "https://www.tiktok.com/@mr_distort", icon: "bi-tiktok", brand: "tiktok" },
     { name: "Instagram", url: "https://www.instagram.com/mr_distort", icon: "bi-instagram", brand: "instagram" },
     { name: "YouTube", url: "https://www.youtube.com/@Mr_Distort", icon: "bi-youtube", brand: "youtube" },
+    { name: "Threads", url: "https://www.threads.com/@mr_distort", icon: "bi-threads", brand: "threads" },
   ];
 
   const platformStats = [
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { value: 245, label: "TikTok Followers" },
     { value: 220, label: "Instagram Followers" },
     { value: 468, label: "YouTube Subscribers" },
+    { value: 0, label: "Threads Followers" }, // UPDATE ME: replace 0 with your real Threads follower count
   ];
 
   const creatorPrograms = [

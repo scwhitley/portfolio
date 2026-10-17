@@ -220,11 +220,19 @@ img{ max-width: 100%; display: block; }
 }
 .cta-row{ display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
 
+.hero-row{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+
 .hero-status{
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-top: 26px;
+  margin-top: 0;
   padding: 12px 18px;
   border: 1px solid var(--line);
   background: var(--white);
