@@ -13,11 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   const platformStats = [
-    { value: 499, label: "Twitch Followers" },
+    { value: 511, label: "Twitch Followers" },
     { value: 27, label: "Kick Followers" },
-    { value: 245, label: "TikTok Followers" },
-    { value: 220, label: "Instagram Followers" },
-    { value: 468, label: "YouTube Subscribers" },
+    { value: 246, label: "TikTok Followers" },
+    { value: 223, label: "Instagram Followers" },
+    { value: 469, label: "YouTube Subscribers" },
     { value: 30, label: "Threads Followers" }, // UPDATE ME: replace 0 with your real Threads follower count
     { value: 0, label: "X Followers" }, // UPDATE ME: replace 0 with your real X follower count
   ];
